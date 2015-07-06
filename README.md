@@ -1,2 +1,2 @@
 # cymon-api-docs
-docs
+docss
