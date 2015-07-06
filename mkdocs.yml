@@ -1,0 +1,5 @@
+site_name: Cymon API Docs
+pages:
+- About: index.md
+
+theme: flatly
