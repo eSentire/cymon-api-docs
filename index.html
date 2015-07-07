@@ -51,7 +51,13 @@
             
             
                 <li class="active">
-                    <a href=".">About</a>
+                    <a href=".">Home</a>
+                </li>
+            
+            
+            
+                <li >
+                    <a href="clients/">Clients</a>
                 </li>
             
             
@@ -64,8 +70,8 @@
                         <i class="fa fa-arrow-left"></i> Previous
                     </a>
                 </li>
-                <li class="disabled">
-                    <a rel="prev" >
+                <li >
+                    <a rel="prev" href="clients/">
                         Next <i class="fa fa-arrow-right"></i>
                     </a>
                 </li>
@@ -79,50 +85,45 @@
             <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
     
-        <li class="main active"><a href="#cymon">Cymon</a></li>
+        <li class="main active"><a href="#about">About</a></li>
         
     
-        <li class="main "><a href="#api-documentation">API Documentation</a></li>
-        
-            <li><a href="#required-packageslibraries">Required Packages/Libraries:</a></li>
-        
-            <li><a href="#to-install">To install:</a></li>
-        
-            <li><a href="#authentication">Authentication</a></li>
-        
-            <li><a href="#http-status-codes">HTTP Status Codes</a></li>
-        
-            <li><a href="#rate-limits">Rate Limits</a></li>
-        
-            <li><a href="#using-the-api">Using the API</a></li>
-        
-            <li><a href="#ip_lookup">ip_lookup</a></li>
-        
-            <li><a href="#ip_events">ip_events</a></li>
-        
-            <li><a href="#ip_domains">ip_domains</a></li>
-        
-            <li><a href="#ip_url">ip_url</a></li>
-        
-            <li><a href="#ip_timeline">ip_timeline</a></li>
-        
-            <li><a href="#domain_lookup">domain_lookup</a></li>
-        
-            <li><a href="#domain_events">domain_events</a></li>
-        
-            <li><a href="#url_lookup">url_lookup</a></li>
-        
-            <li><a href="#ip_blacklist">ip_blacklist</a></li>
+        <li class="main "><a href="#authentication">Authentication</a></li>
         
     
-        <li class="main "><a href="#for-more-information">For more information:</a></li>
+        <li class="main "><a href="#http-status-codes">HTTP Status Codes</a></li>
+        
+    
+        <li class="main "><a href="#rate-limits">Rate Limits</a></li>
+        
+    
+        <li class="main "><a href="#pagination">Pagination</a></li>
+        
+    
+        <li class="main "><a href="#apis">APIs</a></li>
+        
+            <li><a href="#ip-lookup">IP Lookup</a></li>
+        
+            <li><a href="#ip-events">IP Events</a></li>
+        
+            <li><a href="#ip-domains">IP Domains</a></li>
+        
+            <li><a href="#ip-urls">IP URLs</a></li>
+        
+            <li><a href="#ip-timeline">IP Timeline</a></li>
+        
+            <li><a href="#ip-blacklist">IP Blacklist</a></li>
+        
+            <li><a href="#domain-lookup">Domain Lookup</a></li>
+        
+            <li><a href="#url-lookup">URL Lookup</a></li>
         
     
     </ul>
 </div></div>
             <div class="col-md-9" role="main">
 
-<h2 id="cymon">Cymon</h2>
+<h1 id="about">About</h1>
 <blockquote>
 <p>Largest tracker of security reports with over 15,000 unique IPs saved daily</p>
 </blockquote>
@@ -141,21 +142,26 @@
 <li>Blacklists</li>
 <li>Antivirus vendors</li>
 </ul>
-<h2 id="api-documentation">API Documentation</h2>
-<h4 id="required-packageslibraries">Required Packages/Libraries:</h4>
-<p><a href="https://pypi.python.org/pypi/requests">Requests</a>  </p>
-<h3 id="to-install">To install:</h3>
-<p>Pip install cymon</p>
-<h3 id="authentication">Authentication</h3>
-<p>This existing API is synchronous - a search request is issued via a simple GET and POST HTTP call, and the result is computed and returned. Any request made to the Cymon API needs to include an HTTP Basic Authentication header using an authenticaton token. All modern browsers (as well as command line tools like curl and wget) support basic authentication. This is secure, since all communication with the cymon api service happens over SSL/HTTPS.</p>
-<h3 id="http-status-codes">HTTP Status Codes</h3>
+<h1 id="authentication">Authentication</h1>
+<p>Any request made to the Cymon API needs to include your access key in the <code>Authorization</code> HTTP header.
+The key should be prefixed by the string literal "Token", with whitespace separating the two strings. For example:</p>
+<pre><code>Authorization: Token 9944b09199c62bcf9418ad846dd0e4bbdfc6ee4b
+</code></pre>
+
+<p>Unauthenticated responses that are denied permission will result in an <code>HTTP 401 Unauthorized</code> response with an appropriate <code>WWW-Authenticate</code> header. 
+For example:</p>
+<pre><code>WWW-Authenticate: Token
+</code></pre>
+
+<p>The <code>curl</code> command line tool may be useful for testing token authenticated APIs. For example:</p>
+<pre><code class="bash">curl -X GET https://cymon.io/api/nexus/v1/blacklist/ip/malware/ -H 'Authorization: Token 9944b09199c62bcf9418ad846dd0e4bbdfc6ee4b'
+</code></pre>
+
+<h1 id="http-status-codes">HTTP Status Codes</h1>
 <table>
 <tr>
-
-<th>Status code</th>
-
+<th>Code</th>
 <th>Description</th>
-
 </tr>
 
 <tr>
@@ -163,237 +169,292 @@
 <td><tt>Ok Success</tt></td>
 </tr>
 
-
 <tr>
 <td><tt>401</tt></td>
-
-
-<td> Unauthorized: Access is denied due to invalid token.</td>
+<td><tt>Unauthorized: Access is denied due to invalid token.</tt></td>
 </tr>
 
 <tr>
 <td><tt>404</tt></td>
-
-<td>NOT FOUND. The request was invalid or cannot be otherwise served.</td>
+<td><tt>Not Found: The request was invalid or cannot be otherwise served.</tt></td>
 </tr>
+
+<tr>
+<td><tt>429</tt></td>
+<td><tt>Too Many Requests: Rate limit exceeded.</tt></td>
+</tr>
+
 <tr>
 <td><tt>500</tt></td>
-<td><tt>Internal service error</tt></td>
+<td><tt>API Error</tt></td>
 </tr>
 </table>
 
-<h4 id="example-error-response">Example Error Response</h4>
-<pre><code class="json">{
-raise HTTPError(http_error_msg, response=self)
-requests.exceptions.HTTPError:  
-401 Client Error: UNAUTHORIZED
+<p>Example Error Response:</p>
+<pre><code class="http">HTTP 404 Not Found
+Content-Type: application/json
+Vary: Accept
+Allow: GET, HEAD, OPTIONS
+
+{
+    &quot;detail&quot;: &quot;Not found.&quot;
 }
 </code></pre>
 
-<h4 id="other-errors">Other errors</h4>
-<h5 id="attributeerror-cymon-object-has-no-attribute">AttributeError: 'Cymon object has no attribute'</h5>
-<ul>
-<li>A query isn't specified.</li>
-<li>A query is invalid.</li>
-</ul>
-<h3 id="rate-limits">Rate Limits</h3>
-<ul>
-<li>Up to 1000 requests/day  </li>
-<li>To request for a limit increase, please contact <a href="https://esentire.com//">eSentire</a></li>
-</ul>
-<h3 id="using-the-api">Using the API</h3>
+<h1 id="rate-limits">Rate Limits</h1>
 <table>
-
-<td><tt>Base endpoint</tt></td>
-<td><tt>https://cymon.io/api/nexus/v1</tt></td>
+<tr>
+<th>Connection Type</th>
+<th>Rate</th>
+</tr>
+<tr>
+<td>Anonymous User</td>
+<td>500/day</td>
+</tr>
+<tr>
+<td>Authenticated User</td>
+<td>1000/day</td>
 </tr>
 </table>
 
-<h3 id="ip_lookup">ip_lookup</h3>
+<blockquote>
+<p>To request for a limit increase, please contact <a href="mailto:info@cymon.io">info@cymon.io</a></p>
+</blockquote>
+<p>Example Rate Limit Error:</p>
+<pre><code class="http">HTTP 429 
+Retry-After: 86397
+Content-Type: application/json
+Vary: Accept
+Allow: GET, HEAD, OPTIONS
+
+{
+    &quot;detail&quot;: &quot;Request was throttled. Expected available in 86397.0 seconds.&quot;
+}
+</code></pre>
+
+<h1 id="pagination">Pagination</h1>
+<p>Cymon API uses "Limit-Offset" pagination for data lists that have more than 10 objects.
+The client includes both a "limit" and an "offset" query parameter. 
+The limit indicates the maximum number of items to return. 
+The offset indicates the starting position of the query in relation to the complete set of unpaginated items.</p>
+<p>Request example:</p>
+<pre><code class="http">GET https://cymon.io/api/nexus/v1/ip/x.x.x.x/events/?limit=100&amp;offset=400
+</code></pre>
+
+<p>Response:</p>
+<pre><code class="json">{
+    &quot;count&quot;: 1023,
+    &quot;next&quot;: &quot;https://cymon.io/api/nexus/v1/ip/x.x.x.x/events/?limit=100&amp;offset=500&quot;,
+    &quot;previous&quot;: &quot;https://cymon.io/api/nexus/v1/ip/x.x.x.x/events/?limit=100&amp;offset=300&quot;,
+    &quot;results&quot;: [
+        ...
+    ]
+}
+</code></pre>
+
+<h1 id="apis">APIs</h1>
+<h2 id="ip-lookup">IP Lookup</h2>
 <p>Provides IP object details</p>
 <p><code>/api/nexus/v1/ip/{addr}/</code>  </p>
 <p>Method: <code>GET</code></p>
 <table>
 <tr>
 <th>Parameter</th>
-<th>Type</th>
+<th>Data Type</th>
 <th>Required</th>
 <th>Description</th>
 </tr>
 <tr>
-<td><tt>addr</tt></td>
+<td>addr</td>
 <td>String</td>
 <td>Yes</td>
 <td>IP address</td>
 </tr>
 </table>
 
-<h4 id="sample-response-body">Sample response body</h4>
-<pre><code>{
-  &quot;addr&quot;: &quot;8.8.8.8&quot;,
-  &quot;created&quot;: &quot;2015-03-23T12:03:42&quot;,
-  &quot;updated&quot;: &quot;2015-05-21T19:21:29&quot;,
-  &quot;sources&quot;: [
-    &quot;malwr.com&quot;,
-    &quot;virustotal.com&quot;,
-    &quot;urlquery.net&quot;,
-    &quot;google safebrowsing&quot;
-  ],
-  &quot;events&quot;: &quot;https://cymon.io/api/nexus/v1/ip/8.8.8.8/events&quot;,
-  &quot;domains&quot;: &quot;https://cymon.io/api/nexus/v1/ip/8.8.8.8/domains&quot;,
-  &quot;urls&quot;: &quot;https://cymon.io/api/nexus/v1/ip/8.8.8.8/urls&quot;,
-  &quot;timeline&quot;: &quot;https://cymon.io/api/nexus/v1/ip/8.8.8.8/timeline&quot;
+<h3 id="sample-response-body">Sample response body</h3>
+<pre><code class="json">{
+    &quot;addr&quot;: &quot;5.248.253.190&quot;,
+    &quot;created&quot;: &quot;2015-06-19T22:11:26&quot;,
+    &quot;updated&quot;: &quot;2015-06-19T22:11:43&quot;,
+    &quot;sources&quot;: [
+        &quot;pbl.spamhaus.org&quot;,
+        &quot;zen.spamhaus.org&quot;,
+        &quot;v6.fullbogons.cymru.com&quot;,
+        &quot;tor.ahbl.org&quot;,
+        &quot;dnsbl.ahbl.org&quot;,
+        &quot;virustotal.com&quot;,
+        &quot;urlquery.net&quot;
+    ],
+    &quot;events&quot;: &quot;https://cymon.io/api/nexus/v1/ip/5.248.253.190/events&quot;,
+    &quot;domains&quot;: &quot;https://cymon.io/api/nexus/v1/ip/5.248.253.190/domains&quot;,
+    &quot;urls&quot;: &quot;https://cymon.io/api/nexus/v1/ip/5.248.253.190/urls&quot;,
+    &quot;timeline&quot;: &quot;https://cymon.io/api/nexus/v1/ip/5.248.253.190/timeline&quot;
 }
 </code></pre>
 
-<h3 id="ip_events">ip_events</h3>
+<h2 id="ip-events">IP Events</h2>
 <p>Provides security event resources</p>
 <p><code>/api/nexus/v1/ip/{addr}/events/</code>  </p>
 <p>Method: <code>GET</code></p>
 <table>
 <tr>
 <th>Parameter</th>
-<th>Type</th>
+<th>Data Type</th>
 <th>Required</th>
 <th>Description</th>
 </tr>
 <tr>
-<td><tt>addr</tt></td>
+<td>addr</td>
 <td>String</td>
 <td>Yes</td>
 <td>IP address</td>
 </tr>
 </table>
 
-<h4 id="sample-response-body_1">Sample response body</h4>
-<pre><code>{
-    &quot;title&quot;: &quot;Malicious activity reported by urlquery.net&quot;,
-    &quot;description&quot;: &quot;Posted: 2015-06-28 12:55:50\nIDS Alerts: 0\nURLQuery Alerts:
-    1\nBlacklists:0\nMalicious page URL: http://iad12s04-in-f22.1h100.net/irwravxrc/tra_q.php&quot;,
-    &quot;details_url&quot;: &quot;http://urlquery.net/report.php?id=1435488950438&quot;,
-    &quot;created&quot;: &quot;2015-06-28T10:56:26&quot;,
-    &quot;updated&quot;: &quot;2015-06-28T10:56:26&quot;,
-    &quot;tag&quot;: &quot;malicious activity&quot;
-},
-
-
+<h3 id="sample-response-body_1">Sample response body</h3>
+<pre><code class="json">{
+    &quot;count&quot;: 7,
+    &quot;next&quot;: null,
+    &quot;previous&quot;: null,
+    &quot;results&quot;: [
+        {
+            &quot;title&quot;: &quot;IP blacklisted by zen.spamhaus.org&quot;,
+            &quot;description&quot;: null,
+            &quot;details_url&quot;: null,
+            &quot;created&quot;: &quot;2015-06-19T22:11:29&quot;,
+            &quot;updated&quot;: &quot;2015-06-19T22:11:29&quot;,
+            &quot;tag&quot;: &quot;dnsbl&quot;
+        },
+        {
+            &quot;title&quot;: &quot;Malware reported by VirusTotal.com&quot;,
+            &quot;description&quot;: &quot;Scan date: 2015-06-19 05:35:57\nVirusTotal score: 4/63\nDomain: 5.248.253.190\nMalware URL: hxxp://5.248.253.190/pod1/mobile7.exe\n&quot;,
+            &quot;details_url&quot;: &quot;https://www.virustotal.com/en/ip-address/5.248.253.190/information/&quot;,
+            &quot;created&quot;: &quot;2015-06-19T05:35:57&quot;,
+            &quot;updated&quot;: &quot;2015-06-19T22:11:43&quot;,
+            &quot;tag&quot;: &quot;malware&quot;
+        },
+        ...
+    ]
+}
 </code></pre>
 
-<h3 id="ip_domains">ip_domains</h3>
+<h2 id="ip-domains">IP Domains</h2>
 <p>Provides domains associated with an IP</p>
 <p><code>/api/nexus/v1/ip/{addr}/domains/</code>  </p>
 <p>Method: <code>GET</code></p>
 <table>
 <tr>
 <th>Parameter</th>
-<th>Type</th>
+<th>Data Type</th>
 <th>Required</th>
 <th>Description</th>
 </tr>
 <tr>
-<td><tt>addr</tt></td>
+<td>addr</td>
 <td>String</td>
 <td>Yes</td>
 <td>IP address</td>
 </tr>
 </table>
 
-<h4 id="sample-response-body_2">Sample response body</h4>
-<pre><code>{
-    {
-  &quot;count&quot;: 86,
-  &quot;next&quot;: &quot;https://cymon.io/api/nexus/v1/ip/8.8.8.8/domains/?offset=10&quot;,
-  &quot;previous&quot;: null,
-  &quot;results&quot;: [
-    {
-      &quot;name&quot;: &quot;ms08067.com&quot;,
-      &quot;created&quot;: &quot;2015-06-12T02:55:16&quot;,
-      &quot;updated&quot;: &quot;2015-06-20T18:19:21&quot;,
-      &quot;sources&quot;: [
-        &quot;urlquery.net&quot;,
-        &quot;google safebrowsing&quot;
-      ],
-      &quot;ips&quot;: [
-        &quot;https://cymon.io/api/nexus/v1/ip/61.44.22.36&quot;,
-        &quot;https://cymon.io/api/nexus/v1/ip/69.80.104.253&quot;,
-        &quot;https://cymon.io/api/nexus/v1/ip/38.64.152.247&quot;,
-        &quot;https://cymon.io/api/nexus/v1/ip/206.46.186.241&quot;,
-        ...
-},
+<h3 id="sample-response-body_2">Sample response body</h3>
+<pre><code class="json">{
+    &quot;count&quot;: 1,
+    &quot;next&quot;: null,
+    &quot;previous&quot;: null,
+    &quot;results&quot;: [
+        {
+            &quot;name&quot;: &quot;5-248-253-190-broadband.kyivstar.net&quot;,
+            &quot;created&quot;: &quot;2015-06-19T22:11:27&quot;,
+            &quot;updated&quot;: &quot;2015-06-19T22:11:43&quot;,
+            &quot;sources&quot;: [
+                &quot;ptr&quot;
+            ],
+            &quot;ips&quot;: [
+                &quot;https://cymon.io/api/nexus/v1/ip/5.248.253.190&quot;
+            ],
+            &quot;urls&quot;: [],
+            &quot;events&quot;: &quot;https://cymon.io/api/nexus/v1/domain/5-248-253-190-broadband.kyivstar.net/events&quot;
+        }
+    ]
+}
 </code></pre>
 
-<h3 id="ip_url">ip_url</h3>
+<h2 id="ip-urls">IP URLs</h2>
 <p>Provides URLs associated with an IP</p>
 <p><code>/api/nexus/v1/ip/{addr}/urls/</code>  </p>
 <p>Method: <code>GET</code></p>
 <table>
 <tr>
 <th>Parameter</th>
-<th>Type</th>
+<th>Data Type</th>
 <th>Required</th>
 <th>Description</th>
 </tr>
 <tr>
-<td><tt>addr</tt></td>
+<td>addr</td>
 <td>String</td>
 <td>Yes</td>
 <td>IP address</td>
 </tr>
 </table>
 
-<h4 id="sample-response-body_3">Sample response body</h4>
-<pre><code>{
-  &quot;count&quot;: 84,
-  &quot;next&quot;: &quot;https://cymon.io/api/nexus/v1/ip/8.8.8.8/urls/?offset=10&quot;,
-  &quot;previous&quot;: null,
-  &quot;results&quot;: [
-    {
-      &quot;location&quot;: &quot;http://iad12s04-in-f22.1h100.net/irwravxrc/tra_q.php&quot;,
-      &quot;created&quot;: &quot;2015-06-28T10:56:26&quot;,
-      &quot;updated&quot;: &quot;2015-06-28T10:56:26&quot;,
-      &quot;sources&quot;: [
-        &quot;urlquery.net&quot;
-      ],
-      &quot;ips&quot;: [
-        &quot;https://cymon.io/api/nexus/v1/ip/8.8.8.8&quot;
-      ],
-      &quot;domains&quot;: &quot;https://cymon.io/api/nexus/v1/domain/iad12s04-in-f22.1h100.net&quot;
-    },
-     ...
+<h3 id="sample-response-body_3">Sample response body</h3>
+<pre><code class="json">{
+    &quot;count&quot;: 29,
+    &quot;next&quot;: &quot;https://cymon.io/api/nexus/v1/ip/74.220.203.57/urls?offset=10&quot;,
+    &quot;previous&quot;: null,
+    &quot;results&quot;: [
+        {
+            &quot;location&quot;: &quot;http://ortegatraders.com/&quot;,
+            &quot;created&quot;: &quot;2015-07-07T13:47:57&quot;,
+            &quot;updated&quot;: &quot;2015-07-07T13:47:57&quot;,
+            &quot;sources&quot;: [
+                &quot;virustotal.com&quot;
+            ],
+            &quot;ips&quot;: [
+                &quot;https://cymon.io/api/nexus/v1/ip/74.220.203.57&quot;
+            ],
+            &quot;domains&quot;: &quot;https://cymon.io/api/nexus/v1/domain/ortegatraders.com&quot;
+        },
+        ...
+    ]
+}
 </code></pre>
 
-<h3 id="ip_timeline">ip_timeline</h3>
+<h2 id="ip-timeline">IP Timeline</h2>
 <p>Provides a timeline of details</p>
 <p><code>/api/nexus/v1/ip/{addr}/timeline/</code>  </p>
 <p>Method: <code>GET</code></p>
 <table>
 <tr>
 <th>Parameter</th>
-<th>Type</th>
+<th>Data Type</th>
 <th>Required</th>
 <th>Description</th>
 </tr>
 <tr>
-<td><tt>addr</tt></td>
+<td>addr</td>
 <td>String</td>
 <td>Yes</td>
 <td>IP address</td>
 </tr>
 </table>
 
-<h4 id="sample-response-body_4">Sample response body</h4>
-<pre><code>{
+<h3 id="sample-response-body_4">Sample response body</h3>
+<pre><code class="json">{
       &quot;time_label&quot;: &quot;Jun. 28, 2015&quot;,
       &quot;events&quot;: [
         {
-          &quot;description&quot;: &quot;Posted: 2015-06-28 12:55:50\nIDS Alerts: 0\nURLQuery Alerts: 1\nBlacklists: 0\nMalicious page URL: http://iad12s04-in-f22.1h100.net/irwravxrc/tra_q.php&quot;,
+          &quot;description&quot;: &quot;Posted: 2015-06-28 12:55:50\nIDS Alerts: 0\nURLQuery Alerts: 1\nBlacklists: 0\nMalicious page URL: hxxp://iad12s04-in-f22.1h100.net/irwravxrc/tra_q.php&quot;,
           &quot;created&quot;: &quot;2015-06-28T10:56:26&quot;,
           &quot;title&quot;: &quot;Malicious activity reported by urlquery.net&quot;,
           &quot;details_url&quot;: &quot;http://urlquery.net/report.php?id=1435488950438&quot;,
           &quot;tag&quot;: &quot;malicious activity&quot;
         },
         {
-          &quot;description&quot;: &quot;Posted: 2015-06-28 12:53:10\nIDS Alerts: 0\nURLQuery Alerts: 1\nBlacklists: 0\nMalicious page URL: http://iad12s04-in-f22.1h100.net&quot;,
+          &quot;description&quot;: &quot;Posted: 2015-06-28 12:53:10\nIDS Alerts: 0\nURLQuery Alerts: 1\nBlacklists: 0\nMalicious page URL: hxxp://iad12s04-in-f22.1h100.net&quot;,
           &quot;created&quot;: &quot;2015-06-28T10:53:24&quot;,
           &quot;title&quot;: &quot;Malicious activity reported by urlquery.net&quot;,
           &quot;details_url&quot;: &quot;http://urlquery.net/report.php?id=1435488790307&quot;,
@@ -404,118 +465,20 @@ requests.exceptions.HTTPError:
      ...
 </code></pre>
 
-<h3 id="domain_lookup">domain_lookup</h3>
-<p>Provides domain object detail</p>
-<p><code>/api/nexus/v1/domain/{name}</code>  </p>
-<p>Method: <code>GET</code></p>
-<table>
-<tr>
-<th>Parameter</th>
-<th>Type</th>
-<th>Data Type</th>
-<th>Required</th>
-<th>Description</th>
-
-</tr>
-<tr>
-<td><tt>name</tt></td>
-<td>Path</td>
-<td>String</td>
-<td>Yes</td>
-<td>Domain name</td>
-
-</tr>
-</table>
-
-<h4 id="sample-response-body_5">Sample response body</h4>
-<pre><code>{
-  &quot;name&quot;: &quot;google.com&quot;,
-  &quot;created&quot;: &quot;2015-01-26T12:31:37&quot;,
-  &quot;updated&quot;: &quot;2015-07-03T18:14:23&quot;,
-  &quot;sources&quot;: [
-    &quot;malwr.com&quot;,
-    &quot;ptr&quot;,
-    &quot;urlquery.net&quot;,
-    &quot;cleanmx-malware&quot;,
-    &quot;cleanmx-phishing&quot;
-  ],
-  &quot;ips&quot;: [
-    &quot;https://cymon.io/api/nexus/v1/ip/168.235.156.164&quot;,
-    &quot;https://cymon.io/api/nexus/v1/ip/208.146.44.191&quot;,
-    &quot;https://cymon.io/api/nexus/v1/ip/173.194.67.91&quot;,
-     ...
-</code></pre>
-
-<h3 id="domain_events">domain_events</h3>
-<p>Provides security events resource</p>
-<p><code>/api/nexus/v1/domain/{name}/events/</code>  </p>
-<p>Method: <code>GET</code></p>
-<table>
-<tr>
-<th>Parameter</th>
-<th>Type</th>
-<th>Data Type</th>
-<th>Required</th>
-<th>Description</th>
-
-</tr>
-<tr>
-<td><tt>name</tt></td>
-<td>Path</td>
-<td>String</td>
-<td>Yes</td>
-<td>Domain name</td>
-
-</tr>
-</table>
-
-<h4 id="sample-response-body_6">Sample response body</h4>
-<pre><code>
-</code></pre>
-
-<h3 id="url_lookup">url_lookup</h3>
-<p>Provides security events resource</p>
-<p><code>/api/nexus/v1/domain/{name}/events/</code>  </p>
-<p>Method: <code>GET</code></p>
-<table>
-<tr>
-<th>Parameter</th>
-<th>Type</th>
-<th>Data Type</th>
-<th>Required</th>
-<th>Description</th>
-
-</tr>
-<tr>
-<td><tt>URL</tt></td>
-<td>Path</td>
-<td>String</td>
-<td>Yes</td>
-<td>url path</td>
-
-</tr>
-</table>
-
-<h4 id="sample-response-body_7">Sample response body</h4>
-<pre><code>
-</code></pre>
-
-<h3 id="ip_blacklist">ip_blacklist</h3>
+<h2 id="ip-blacklist">IP Blacklist</h2>
 <p>Retrieve list of IPs that are associated with certain tag</p>
 <p><code>/api/nexus/v1/blacklist/ip/{tag}/</code>  </p>
 <p>Method: <code>GET</code></p>
 <table>
 <tr>
 <th>Parameter</th>
-<th>Type</th>
 <th>Data Type</th>
 <th>Required</th>
 <th>Description</th>
 
 </tr>
 <tr>
-<td><tt>tag</tt></td>
-<td>Path</td>
+<td>tag</td>
 <td>String</td>
 <td>Yes</td>
 <td>Tag name</td>
@@ -523,32 +486,105 @@ requests.exceptions.HTTPError:
 </tr>
 </table>
 
-<h4 id="supported-tags">Supported tags:</h4>
+<h3 id="supported-tags">Supported tags:</h3>
 <ul>
-<li>malware  </li>
-<li>botnet  </li>
-<li>spam  </li>
-<li>phishing  </li>
-<li>malicious activity  </li>
-<li>blacklist  </li>
-<li>dnsb  </li>
+<li>malware</li>
+<li>botnet</li>
+<li>spam</li>
+<li>phishing</li>
+<li>malicious activity</li>
+<li>blacklist</li>
+<li>dnsbl</li>
 </ul>
-<h4 id="sample-response-body_8">Sample response body</h4>
-<pre><code>{u'count': 228, u'previous': None, u'results': 
-[{u'url': u'https://cymon.io/api/nexus/v1/ip/185.58.116.134',
-u'addr': u'185.58.116.134'},
-{u'url': u'https://cymon.io/api/nexus/v1/ip/188.213.133.67',
-u'addr': u'188.213.133.67'},
-...
-
-Process finished with exit code 0
-
-
+<h3 id="sample-response-body_5">Sample response body</h3>
+<pre><code class="json">{
+    &quot;count&quot;: 617,
+    &quot;next&quot;: &quot;https://cymon.io/api/nexus/v1/blacklist/ip/malware/?offset=10&quot;,
+    &quot;previous&quot;: null,
+    &quot;results&quot;: [
+        {
+            &quot;addr&quot;: &quot;42.115.158.45&quot;,
+            &quot;url&quot;: &quot;https://cymon.io/api/nexus/v1/ip/42.115.158.45&quot;
+        },
+        {
+            &quot;addr&quot;: &quot;182.16.233.188&quot;,
+            &quot;url&quot;: &quot;https://cymon.io/api/nexus/v1/ip/182.16.233.188&quot;
+        },
+        ...
+    ]
+}
 </code></pre>
 
-<h2 id="for-more-information">For more information:</h2>
-<p>Cymon API library (Python): <a href="https://github.com/eSentire/cymon-python">Here</a>  </p>
-<p>Contact: roy.firestein@esentire.com</p></div>
+<h2 id="domain-lookup">Domain Lookup</h2>
+<p>Provides domain object detail</p>
+<p><code>/api/nexus/v1/domain/{name}</code>  </p>
+<p>Method: <code>GET</code></p>
+<table>
+<tr>
+<th>Parameter</th>
+<th>Data Type</th>
+<th>Required</th>
+<th>Description</th>
+
+</tr>
+<tr>
+<td>name</td>
+<td>String</td>
+<td>Yes</td>
+<td>Domain name</td>
+
+</tr>
+</table>
+
+<h3 id="sample-response-body_6">Sample response body</h3>
+<pre><code class="json">{
+    &quot;name&quot;: &quot;hiepkute1970.zapto.org&quot;,
+    &quot;created&quot;: &quot;2015-07-07T14:14:11&quot;,
+    &quot;updated&quot;: &quot;2015-07-07T14:14:11&quot;,
+    &quot;sources&quot;: [
+        &quot;malwr.com&quot;
+    ],
+    &quot;ips&quot;: [
+        &quot;https://cymon.io/api/nexus/v1/ip/42.115.158.45&quot;
+    ],
+    &quot;urls&quot;: [],
+    &quot;events&quot;: &quot;https://cymon.io/api/nexus/v1/domain/hiepkute1970.zapto.org/events&quot;
+}
+</code></pre>
+
+<h2 id="url-lookup">URL Lookup</h2>
+<p>Provides security events resource</p>
+<p><code>/api/nexus/v1/domain/{name}/events/</code>  </p>
+<p>Method: <code>GET</code></p>
+<table>
+<tr>
+<th>Parameter</th>
+<th>Data Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+<tr>
+<td>URL</td>
+<td>String</td>
+<td>Yes</td>
+<td>url path</td>
+</tr>
+</table>
+
+<h3 id="sample-response-body_7">Sample response body</h3>
+<pre><code>{
+    &quot;location&quot;: &quot;hxxp://faker.su/data/entry/steam/Steam.exe&quot;,
+    &quot;created&quot;: &quot;2015-04-22T13:33:27.643167Z&quot;,
+    &quot;updated&quot;: &quot;2015-04-22T13:33:27.662668Z&quot;,
+    &quot;sources&quot;: [
+        &quot;vxvault&quot;
+    ],
+    &quot;ips&quot;: [
+        &quot;https://cymon.io/api/nexus/v1/ip/94.75.240.108&quot;
+    ],
+    &quot;domains&quot;: &quot;https://cymon.io/api/nexus/v1/domain/faker.su&quot;
+}
+</code></pre></div>
         </div>
 
         <footer class="col-md-12">
