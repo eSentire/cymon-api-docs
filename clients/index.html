@@ -115,9 +115,9 @@
 &gt;&gt;&gt; ## Connect to https://cymon.io/api/nexus/v1/ with no authentication
 &gt;&gt;&gt; api = slumber.API(&quot;https://cymon.io/api/nexus/v1/&quot;)
 &gt;&gt;&gt; ## GET https://cymon.io/api/nexus/v1/ip/1.1.1.1
-&gt;&gt;&gt; api.ip.get('1.1.1.1')
+&gt;&gt;&gt; api.ip('1.1.1.1').get()
 &gt;&gt;&gt; ## GET https://cymon.io/api/nexus/v1/ip/1.1.1.1/events
-&gt;&gt;&gt; api.ip.get('1.1.1.1').events()
+&gt;&gt;&gt; api.ip('1.1.1.1').events().get()
 </code></pre></div>
         </div>
 
