@@ -1,5 +1,11 @@
 site_name: Cymon API Docs
 pages:
-- About: index.md
+- Home: index.md
+- Clients: clients.md
+#- StatusCodes: status-codes.md
+#- Examples: examples.md
+#- API: api.md
+#- rates: rates.md
+#- Installation: installation.md
 
 theme: flatly
