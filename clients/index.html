@@ -105,6 +105,19 @@
 
 <h4 id="install-from-source">Install from source</h4>
 <pre><code class="bash">python ./setup.py install
+</code></pre>
+
+<h3 id="slumber">slumber</h3>
+<p>Slumber is a python library that provides a convenient yet powerful object orientated interface to ReSTful APIs. It acts as a wrapper around the excellent requests library and abstracts away the handling of urls, serialization, and processing requests.</p>
+<p>Source: <a href="https://github.com/samgiles/slumber">https://github.com/samgiles/slumber</a></p>
+<p>Usage example:</p>
+<pre><code class="python">&gt;&gt;&gt; import slumber
+&gt;&gt;&gt; ## Connect to https://cymon.io/api/nexus/v1/ with no authentication
+&gt;&gt;&gt; api = slumber.API(&quot;https://cymon.io/api/nexus/v1/&quot;)
+&gt;&gt;&gt; ## GET https://cymon.io/api/nexus/v1/ip/1.1.1.1
+&gt;&gt;&gt; api.ip.get('1.1.1.1')
+&gt;&gt;&gt; ## GET https://cymon.io/api/nexus/v1/ip/1.1.1.1/events
+&gt;&gt;&gt; api.ip.get('1.1.1.1').events()
 </code></pre></div>
         </div>
 
