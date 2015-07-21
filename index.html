@@ -23,6 +23,16 @@
         <![endif]-->
 
         
+        <script>
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+            ga('create', 'UA-575509-31', 'docs.cymon.io');
+            ga('send', 'pageview');
+        </script>
+        
     </head>
 
     <body>
@@ -116,6 +126,8 @@
         
             <li><a href="#domain-lookup">Domain Lookup</a></li>
         
+            <li><a href="#domain-blacklist">Domain Blacklist</a></li>
+        
             <li><a href="#url-lookup">URL Lookup</a></li>
         
     
@@ -146,7 +158,7 @@ For example:</p>
 </code></pre>
 
 <blockquote>
-<p>You can register for an API key <a href="https://cymon.io/user/signup/?next=/cp/api/">here</a></p>
+<p>You can register for an API key <a href="#">here</a></p>
 </blockquote>
 <h1 id="http-status-codes">HTTP Status Codes</h1>
 <table>
@@ -547,9 +559,59 @@ The offset indicates the starting position of the query in relation to the compl
 }
 </code></pre>
 
+<h2 id="domain-blacklist">Domain Blacklist</h2>
+<p>Retrieve list of domains that are associated with certain tag</p>
+<p><code>/api/nexus/v1/blacklist/domain/{tag}/</code>  </p>
+<p>Method: <code>GET</code></p>
+<table>
+<tr>
+<th>Parameter</th>
+<th>Data Type</th>
+<th>Required</th>
+<th>Description</th>
+
+</tr>
+<tr>
+<td>tag</td>
+<td>String</td>
+<td>Yes</td>
+<td>Tag name</td>
+
+</tr>
+</table>
+
+<h3 id="supported-tags_1">Supported tags:</h3>
+<ul>
+<li>malware</li>
+<li>botnet</li>
+<li>spam</li>
+<li>phishing</li>
+<li>malicious activity</li>
+<li>blacklist</li>
+<li>dnsbl</li>
+</ul>
+<h3 id="sample-response-body_7">Sample response body</h3>
+<pre><code class="json">{
+    &quot;count&quot;: 617,
+    &quot;next&quot;: &quot;https://cymon.io/api/nexus/v1/blacklist/domain/malware/?offset=10&quot;,
+    &quot;previous&quot;: null,
+    &quot;results&quot;: [
+        {
+            &quot;name&quot;: &quot;advertblocks.vitr.alawar.com&quot;,
+            &quot;url&quot;: &quot;https://cymon.io/api/nexus/v1/domain/advertblocks.vitr.alawar.com&quot;
+        },
+        {
+            &quot;name&quot;: &quot;vitr.alawar.ru&quot;,
+            &quot;url&quot;: &quot;https://cymon.io/api/nexus/v1/domain/vitr.alawar.ru&quot;
+        },
+        ...
+    ]
+}
+</code></pre>
+
 <h2 id="url-lookup">URL Lookup</h2>
 <p>Provides security events resource</p>
-<p><code>/api/nexus/v1/domain/{name}/events/</code>  </p>
+<p><code>/api/nexus/v1/url/http%3A%2F%2Ffaker.su%2Fdata%2Fentry%2Fsteam%2FSteam.exe</code>  </p>
 <p>Method: <code>GET</code></p>
 <table>
 <tr>
@@ -566,7 +628,10 @@ The offset indicates the starting position of the query in relation to the compl
 </tr>
 </table>
 
-<h3 id="sample-response-body_7">Sample response body</h3>
+<blockquote>
+<p>Note that URL string must be url-encoded.</p>
+</blockquote>
+<h3 id="sample-response-body_8">Sample response body</h3>
 <pre><code>{
     &quot;location&quot;: &quot;hxxp://faker.su/data/entry/steam/Steam.exe&quot;,
     &quot;created&quot;: &quot;2015-04-22T13:33:27.643167Z&quot;,
