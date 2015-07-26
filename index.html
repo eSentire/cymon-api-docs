@@ -120,8 +120,6 @@
         
             <li><a href="#ip-urls">IP URLs</a></li>
         
-            <li><a href="#ip-timeline">IP Timeline</a></li>
-        
             <li><a href="#ip-blacklist">IP Blacklist</a></li>
         
             <li><a href="#domain-lookup">Domain Lookup</a></li>
@@ -138,7 +136,7 @@
 <h1 id="about">About</h1>
 <p>Cymon is the largest tracker and aggregator of security reports.
 It ingests events about malware, botnets, phishing, spam and other malicious activities from almost 200 sources daily.
-On average, more than 15,000 unique IPs and 100,000 events are processed each day.</p>
+On average, more than 15,000 unique IPs and 50,000 events are processed each day.</p>
 <blockquote>
 <p><a href="https://cymon.io">https://cymon.io</a></p>
 </blockquote>
@@ -430,48 +428,6 @@ The offset indicates the starting position of the query in relation to the compl
 }
 </code></pre>
 
-<h2 id="ip-timeline">IP Timeline</h2>
-<p>Provides a timeline of details</p>
-<p><code>/api/nexus/v1/ip/{addr}/timeline/</code>  </p>
-<p>Method: <code>GET</code></p>
-<table>
-<tr>
-<th>Parameter</th>
-<th>Data Type</th>
-<th>Required</th>
-<th>Description</th>
-</tr>
-<tr>
-<td>addr</td>
-<td>String</td>
-<td>Yes</td>
-<td>IP address</td>
-</tr>
-</table>
-
-<h3 id="sample-response-body_4">Sample response body</h3>
-<pre><code class="json">{
-      &quot;time_label&quot;: &quot;Jun. 28, 2015&quot;,
-      &quot;events&quot;: [
-        {
-          &quot;description&quot;: &quot;Posted: 2015-06-28 12:55:50\nIDS Alerts: 0\nURLQuery Alerts: 1\nBlacklists: 0\nMalicious page URL: hxxp://iad12s04-in-f22.1h100.net/irwravxrc/tra_q.php&quot;,
-          &quot;created&quot;: &quot;2015-06-28T10:56:26&quot;,
-          &quot;title&quot;: &quot;Malicious activity reported by urlquery.net&quot;,
-          &quot;details_url&quot;: &quot;http://urlquery.net/report.php?id=1435488950438&quot;,
-          &quot;tag&quot;: &quot;malicious activity&quot;
-        },
-        {
-          &quot;description&quot;: &quot;Posted: 2015-06-28 12:53:10\nIDS Alerts: 0\nURLQuery Alerts: 1\nBlacklists: 0\nMalicious page URL: hxxp://iad12s04-in-f22.1h100.net&quot;,
-          &quot;created&quot;: &quot;2015-06-28T10:53:24&quot;,
-          &quot;title&quot;: &quot;Malicious activity reported by urlquery.net&quot;,
-          &quot;details_url&quot;: &quot;http://urlquery.net/report.php?id=1435488790307&quot;,
-          &quot;tag&quot;: &quot;malicious activity&quot;
-        }
-      ]
-    },
-     ...
-</code></pre>
-
 <h2 id="ip-blacklist">IP Blacklist</h2>
 <p>Retrieve list of IPs that are associated with certain tag</p>
 <p><code>/api/nexus/v1/blacklist/ip/{tag}/</code>  </p>
@@ -503,7 +459,7 @@ The offset indicates the starting position of the query in relation to the compl
 <li>blacklist</li>
 <li>dnsbl</li>
 </ul>
-<h3 id="sample-response-body_5">Sample response body</h3>
+<h3 id="sample-response-body_4">Sample response body</h3>
 <pre><code class="json">{
     &quot;count&quot;: 617,
     &quot;next&quot;: &quot;https://cymon.io/api/nexus/v1/blacklist/ip/malware/?offset=10&quot;,
@@ -543,7 +499,7 @@ The offset indicates the starting position of the query in relation to the compl
 </tr>
 </table>
 
-<h3 id="sample-response-body_6">Sample response body</h3>
+<h3 id="sample-response-body_5">Sample response body</h3>
 <pre><code class="json">{
     &quot;name&quot;: &quot;hiepkute1970.zapto.org&quot;,
     &quot;created&quot;: &quot;2015-07-07T14:14:11&quot;,
@@ -590,7 +546,7 @@ The offset indicates the starting position of the query in relation to the compl
 <li>blacklist</li>
 <li>dnsbl</li>
 </ul>
-<h3 id="sample-response-body_7">Sample response body</h3>
+<h3 id="sample-response-body_6">Sample response body</h3>
 <pre><code class="json">{
     &quot;count&quot;: 617,
     &quot;next&quot;: &quot;https://cymon.io/api/nexus/v1/blacklist/domain/malware/?offset=10&quot;,
@@ -631,7 +587,7 @@ The offset indicates the starting position of the query in relation to the compl
 <blockquote>
 <p>Note that URL string must be url-encoded.</p>
 </blockquote>
-<h3 id="sample-response-body_8">Sample response body</h3>
+<h3 id="sample-response-body_7">Sample response body</h3>
 <pre><code>{
     &quot;location&quot;: &quot;hxxp://faker.su/data/entry/steam/Steam.exe&quot;,
     &quot;created&quot;: &quot;2015-04-22T13:33:27.643167Z&quot;,
@@ -642,7 +598,7 @@ The offset indicates the starting position of the query in relation to the compl
     &quot;ips&quot;: [
         &quot;https://cymon.io/api/nexus/v1/ip/94.75.240.108&quot;
     ],
-    &quot;domains&quot;: &quot;https://cymon.io/api/nexus/v1/domain/faker.su&quot;
+    &quot;domain&quot;: &quot;https://cymon.io/api/nexus/v1/domain/faker.su&quot;
 }
 </code></pre></div>
         </div>
