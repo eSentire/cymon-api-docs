@@ -141,7 +141,8 @@ On average, more than 15,000 unique IPs and 50,000 events are processed each day
 <p><a href="https://cymon.io">https://cymon.io</a></p>
 </blockquote>
 <h1 id="authentication">Authentication</h1>
-<p>Any request made to the Cymon API needs to include your access key in the <code>Authorization</code> HTTP header.
+<p>Cymon allows anonymous API requests, but they will be rate-limited. You will need to authenticate if you want higher access rates.</p>
+<p>Authenticated request made to the Cymon API needs to include your access key in the <code>Authorization</code> HTTP header.
 The key should be prefixed by the string literal "Token", with whitespace separating the two strings. For example:</p>
 <pre><code>Authorization: Token 9944b09199c62bcf9418ad846dd0e4bbdfc6ee4b
 </code></pre>
@@ -240,21 +241,29 @@ Allow: GET, HEAD, OPTIONS
 </blockquote>
 <h2 id="ip-lookup">IP Lookup</h2>
 <p>Provides IP object details</p>
-<p><code>/api/nexus/v1/ip/{addr}/</code>  </p>
-<p>Method: <code>GET</code></p>
+<pre><code class="http">GET /api/nexus/v1/ip/{addr}/
+</code></pre>
+
+<h3 id="parameters">Parameters</h3>
 <table>
-<tr>
-<th>Parameter</th>
-<th>Data Type</th>
-<th>Required</th>
-<th>Description</th>
-</tr>
-<tr>
-<td>addr</td>
-<td>String</td>
-<td>Yes</td>
-<td>IP address</td>
-</tr>
+    <thead>
+        <tr>
+            <th>Parameter</th>
+            <th>Parameter Type</th>
+            <th>Data Type</th>
+            <th>Required</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>addr</td>
+            <td>path</td>
+            <td>string</td>
+            <td>Yes</td>
+            <td>IP address</td>
+        </tr>
+    </tbody>
 </table>
 
 <h3 id="sample-response-body">Sample response body</h3>
@@ -277,23 +286,55 @@ Allow: GET, HEAD, OPTIONS
 }
 </code></pre>
 
+<h3 id="http-status-codes_1">HTTP Status Codes</h3>
+<table>
+    <thead>
+        <tr>
+            <th>Status Code</th>
+            <th>Reason</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>200</td>
+            <td>IP found in database</td>
+        </tr>
+        <tr>
+            <td>404</td>
+            <td>IP not found</td>
+        </tr>
+        <tr>
+            <td>429</td>
+            <td>Request throttled</td>
+        </tr>
+    </tbody>
+</table>
+
 <h2 id="ip-events">IP Events</h2>
 <p>Provides security event resources</p>
-<p><code>/api/nexus/v1/ip/{addr}/events/</code>  </p>
-<p>Method: <code>GET</code></p>
+<pre><code class="http">GET /api/nexus/v1/ip/{addr}/events/
+</code></pre>
+
+<h3 id="parameters_1">Parameters</h3>
 <table>
-<tr>
-<th>Parameter</th>
-<th>Data Type</th>
-<th>Required</th>
-<th>Description</th>
-</tr>
-<tr>
-<td>addr</td>
-<td>String</td>
-<td>Yes</td>
-<td>IP address</td>
-</tr>
+    <thead>
+        <tr>
+            <th>Parameter</th>
+            <th>Parameter Type</th>
+            <th>Data Type</th>
+            <th>Required</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>addr</td>
+            <td>path</td>
+            <td>string</td>
+            <td>Yes</td>
+            <td>IP address</td>
+        </tr>
+    </tbody>
 </table>
 
 <h3 id="sample-response-body_1">Sample response body</h3>
@@ -323,23 +364,55 @@ Allow: GET, HEAD, OPTIONS
 }
 </code></pre>
 
+<h3 id="http-status-codes_2">HTTP Status Codes</h3>
+<table>
+    <thead>
+        <tr>
+            <th>Status Code</th>
+            <th>Reason</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>200</td>
+            <td>IP found in database</td>
+        </tr>
+        <tr>
+            <td>404</td>
+            <td>IP not found</td>
+        </tr>
+        <tr>
+            <td>429</td>
+            <td>Request throttled</td>
+        </tr>
+    </tbody>
+</table>
+
 <h2 id="ip-domains">IP Domains</h2>
 <p>Provides domains associated with an IP</p>
-<p><code>/api/nexus/v1/ip/{addr}/domains/</code>  </p>
-<p>Method: <code>GET</code></p>
+<pre><code class="http">GET /api/nexus/v1/ip/{addr}/domains/
+</code></pre>
+
+<h3 id="parameters_2">Parameters</h3>
 <table>
-<tr>
-<th>Parameter</th>
-<th>Data Type</th>
-<th>Required</th>
-<th>Description</th>
-</tr>
-<tr>
-<td>addr</td>
-<td>String</td>
-<td>Yes</td>
-<td>IP address</td>
-</tr>
+    <thead>
+        <tr>
+            <th>Parameter</th>
+            <th>Parameter Type</th>
+            <th>Data Type</th>
+            <th>Required</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>addr</td>
+            <td>path</td>
+            <td>string</td>
+            <td>Yes</td>
+            <td>IP address</td>
+        </tr>
+    </tbody>
 </table>
 
 <h3 id="sample-response-body_2">Sample response body</h3>
@@ -357,23 +430,55 @@ Allow: GET, HEAD, OPTIONS
 }
 </code></pre>
 
+<h3 id="http-status-codes_3">HTTP Status Codes</h3>
+<table>
+    <thead>
+        <tr>
+            <th>Status Code</th>
+            <th>Reason</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>200</td>
+            <td>IP found in database</td>
+        </tr>
+        <tr>
+            <td>404</td>
+            <td>IP not found</td>
+        </tr>
+        <tr>
+            <td>429</td>
+            <td>Request throttled</td>
+        </tr>
+    </tbody>
+</table>
+
 <h2 id="ip-urls">IP URLs</h2>
 <p>Provides URLs associated with an IP</p>
-<p><code>/api/nexus/v1/ip/{addr}/urls/</code>  </p>
-<p>Method: <code>GET</code></p>
+<pre><code class="http">GET /api/nexus/v1/ip/{addr}/urls/
+</code></pre>
+
+<h3 id="parameters_3">Parameters</h3>
 <table>
-<tr>
-<th>Parameter</th>
-<th>Data Type</th>
-<th>Required</th>
-<th>Description</th>
-</tr>
-<tr>
-<td>addr</td>
-<td>String</td>
-<td>Yes</td>
-<td>IP address</td>
-</tr>
+    <thead>
+        <tr>
+            <th>Parameter</th>
+            <th>Parameter Type</th>
+            <th>Data Type</th>
+            <th>Required</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>addr</td>
+            <td>path</td>
+            <td>string</td>
+            <td>Yes</td>
+            <td>IP address</td>
+        </tr>
+    </tbody>
 </table>
 
 <h3 id="sample-response-body_3">Sample response body</h3>
@@ -391,41 +496,79 @@ Allow: GET, HEAD, OPTIONS
 }
 </code></pre>
 
-<h2 id="ip-blacklist">IP Blacklist</h2>
-<p>Retrieve list of IPs that are associated with certain tag</p>
-<p><code>/api/nexus/v1/blacklist/ip/{tag}/</code>  </p>
-<p>Method: <code>GET</code></p>
+<h3 id="http-status-codes_4">HTTP Status Codes</h3>
 <table>
-<tr>
-<th>Parameter</th>
-<th>Data Type</th>
-<th>Required</th>
-<th>Description</th>
-
-</tr>
-<tr>
-<td>tag</td>
-<td>String</td>
-<td>Yes</td>
-<td>Tag name</td>
-
-</tr>
+    <thead>
+        <tr>
+            <th>Status Code</th>
+            <th>Reason</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>200</td>
+            <td>IP found in database</td>
+        </tr>
+        <tr>
+            <td>404</td>
+            <td>IP not found</td>
+        </tr>
+        <tr>
+            <td>429</td>
+            <td>Request throttled</td>
+        </tr>
+    </tbody>
 </table>
 
-<h3 id="supported-tags">Supported tags:</h3>
-<ul>
-<li>malware</li>
-<li>botnet</li>
-<li>spam</li>
-<li>phishing</li>
-<li>malicious activity</li>
-<li>blacklist</li>
-<li>dnsbl</li>
-</ul>
+<h2 id="ip-blacklist">IP Blacklist</h2>
+<p>Retrieve list of IPs that are associated with certain tag</p>
+<pre><code class="http">GET /api/nexus/v1/blacklist/ip/{tag}/
+</code></pre>
+
+<h3 id="parameters_4">Parameters</h3>
+<table>
+    <thead>
+        <tr>
+            <th>Parameter</th>
+            <th>Parameter Type</th>
+            <th>Data Type</th>
+            <th>Required</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>tag</td>
+            <td>path</td>
+            <td>string</td>
+            <td>Yes</td>
+            <td>
+            One of the following tags:<br/>
+            <ul>
+                <li>malware</li>
+                <li>botnet</li>
+                <li>spam</li>
+                <li>phishing</li>
+                <li>malicious activity</li>
+                <li>blacklist</li>
+                <li>dnsbl</li>
+            </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>days</td>
+            <td>query</td>
+            <td>integer</td>
+            <td>No</td>
+            <td>Use data collected since 1-3 days ago (default is 1)</td>
+        </tr>
+    </tbody>
+</table>
+
 <h3 id="sample-response-body_4">Sample response body</h3>
 <pre><code class="json">{
     &quot;count&quot;: 617,
-    &quot;next&quot;: &quot;https://cymon.io/api/nexus/v1/blacklist/ip/malware/?offset=10&quot;,
+    &quot;next&quot;: &quot;https://cymon.io/api/nexus/v1/blacklist/ip/malware/?days=1&amp;offset=10&quot;,
     &quot;previous&quot;: null,
     &quot;results&quot;: [
         {
@@ -443,23 +586,29 @@ Allow: GET, HEAD, OPTIONS
 
 <h2 id="domain-lookup">Domain Lookup</h2>
 <p>Provides domain object detail</p>
-<p><code>/api/nexus/v1/domain/{name}</code>  </p>
-<p>Method: <code>GET</code></p>
+<pre><code class="http">GET /api/nexus/v1/domain/{name}
+</code></pre>
+
+<h3 id="parameters_5">Parameters</h3>
 <table>
-<tr>
-<th>Parameter</th>
-<th>Data Type</th>
-<th>Required</th>
-<th>Description</th>
-
-</tr>
-<tr>
-<td>name</td>
-<td>String</td>
-<td>Yes</td>
-<td>Domain name</td>
-
-</tr>
+    <thead>
+        <tr>
+            <th>Parameter</th>
+            <th>Parameter Type</th>
+            <th>Data Type</th>
+            <th>Required</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>name</td>
+            <td>path</td>
+            <td>string</td>
+            <td>Yes</td>
+            <td>Domain name</td>
+        </tr>
+    </tbody>
 </table>
 
 <h3 id="sample-response-body_5">Sample response body</h3>
@@ -479,35 +628,49 @@ Allow: GET, HEAD, OPTIONS
 
 <h2 id="domain-blacklist">Domain Blacklist</h2>
 <p>Retrieve list of domains that are associated with certain tag</p>
-<p><code>/api/nexus/v1/blacklist/domain/{tag}/</code>  </p>
-<p>Method: <code>GET</code></p>
+<pre><code class="http">GET /api/nexus/v1/blacklist/domain/{tag}/
+</code></pre>
+
+<h3 id="parameters_6">Parameters</h3>
 <table>
-<tr>
-<th>Parameter</th>
-<th>Data Type</th>
-<th>Required</th>
-<th>Description</th>
-
-</tr>
-<tr>
-<td>tag</td>
-<td>String</td>
-<td>Yes</td>
-<td>Tag name</td>
-
-</tr>
+    <thead>
+        <tr>
+            <th>Parameter</th>
+            <th>Parameter Type</th>
+            <th>Data Type</th>
+            <th>Required</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>tag</td>
+            <td>path</td>
+            <td>string</td>
+            <td>Yes</td>
+            <td>
+            One of the following tags:<br/>
+            <ul>
+                <li>malware</li>
+                <li>botnet</li>
+                <li>spam</li>
+                <li>phishing</li>
+                <li>malicious activity</li>
+                <li>blacklist</li>
+                <li>dnsbl</li>
+            </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>days</td>
+            <td>query</td>
+            <td>integer</td>
+            <td>No</td>
+            <td>Use data collected since 1-3 days ago (default is 1)</td>
+        </tr>
+    </tbody>
 </table>
 
-<h3 id="supported-tags_1">Supported tags:</h3>
-<ul>
-<li>malware</li>
-<li>botnet</li>
-<li>spam</li>
-<li>phishing</li>
-<li>malicious activity</li>
-<li>blacklist</li>
-<li>dnsbl</li>
-</ul>
 <h3 id="sample-response-body_6">Sample response body</h3>
 <pre><code class="json">{
     &quot;count&quot;: 617,
@@ -529,21 +692,29 @@ Allow: GET, HEAD, OPTIONS
 
 <h2 id="url-lookup">URL Lookup</h2>
 <p>Provides security events resource</p>
-<p><code>/api/nexus/v1/url/http%253A%252F%252Ffaker.su%252Fdata%252Fentry%252Fsteam%252FSteam.exe</code>  </p>
-<p>Method: <code>GET</code></p>
+<pre><code class="http">GET /api/nexus/v1/url/{location}
+</code></pre>
+
+<h3 id="parameters_7">Parameters</h3>
 <table>
-<tr>
-<th>Parameter</th>
-<th>Data Type</th>
-<th>Required</th>
-<th>Description</th>
-</tr>
-<tr>
-<td>URL</td>
-<td>String</td>
-<td>Yes</td>
-<td>url path</td>
-</tr>
+    <thead>
+        <tr>
+            <th>Parameter</th>
+            <th>Parameter Type</th>
+            <th>Data Type</th>
+            <th>Required</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>location</td>
+            <td>path</td>
+            <td>string</td>
+            <td>Yes</td>
+            <td>Escaped URL string</td>
+        </tr>
+    </tbody>
 </table>
 
 <blockquote>
@@ -563,6 +734,34 @@ Allow: GET, HEAD, OPTIONS
     &quot;domain&quot;: &quot;https://cymon.io/api/nexus/v1/domain/faker.su&quot;
 }
 </code></pre>
+
+<h3 id="testing-with-curl">Testing with CURL</h3>
+<pre><code class="bash">curl 'https://cymon.io/api/nexus/v1/url/http%253A%252F%252Ffaker.su%252Fdata%252Fentry%252Fsteam%252FSteam.exe'
+</code></pre>
+
+<h3 id="http-status-codes_5">HTTP Status Codes</h3>
+<table>
+    <thead>
+        <tr>
+            <th>Status Code</th>
+            <th>Reason</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>200</td>
+            <td>URL found in database</td>
+        </tr>
+        <tr>
+            <td>404</td>
+            <td>URL not found</td>
+        </tr>
+        <tr>
+            <td>429</td>
+            <td>Request throttled</td>
+        </tr>
+    </tbody>
+</table>
 
 <h1 id="pagination">Pagination</h1>
 <p>Cymon API uses "Limit-Offset" pagination.
