@@ -107,9 +107,6 @@
         <li class="main "><a href="#rate-limits">Rate Limits</a></li>
         
     
-        <li class="main "><a href="#pagination">Pagination</a></li>
-        
-    
         <li class="main "><a href="#apis">APIs</a></li>
         
             <li><a href="#ip-lookup">IP Lookup</a></li>
@@ -127,6 +124,9 @@
             <li><a href="#domain-blacklist">Domain Blacklist</a></li>
         
             <li><a href="#url-lookup">URL Lookup</a></li>
+        
+    
+        <li class="main "><a href="#pagination">Pagination</a></li>
         
     
     </ul>
@@ -230,26 +230,6 @@ Allow: GET, HEAD, OPTIONS
 
 {
     &quot;detail&quot;: &quot;Request was throttled. Expected available in 86397.0 seconds.&quot;
-}
-</code></pre>
-
-<h1 id="pagination">Pagination</h1>
-<p>Cymon API uses "Limit-Offset" pagination.
-The client includes both a "limit" and an "offset" query parameter. 
-The limit indicates the maximum number of items to return. The default limit size is 10. 
-The offset indicates the starting position of the query in relation to the complete set of unpaginated items.</p>
-<p>Request example:</p>
-<pre><code class="http">GET https://cymon.io/api/nexus/v1/ip/x.x.x.x/events/?limit=100&amp;offset=400
-</code></pre>
-
-<p>Response:</p>
-<pre><code class="json">{
-    &quot;count&quot;: 1023,
-    &quot;next&quot;: &quot;https://cymon.io/api/nexus/v1/ip/x.x.x.x/events/?limit=100&amp;offset=500&quot;,
-    &quot;previous&quot;: &quot;https://cymon.io/api/nexus/v1/ip/x.x.x.x/events/?limit=100&amp;offset=300&quot;,
-    &quot;results&quot;: [
-        ...
-    ]
 }
 </code></pre>
 
@@ -364,24 +344,16 @@ The offset indicates the starting position of the query in relation to the compl
 
 <h3 id="sample-response-body_2">Sample response body</h3>
 <pre><code class="json">{
-    &quot;count&quot;: 1,
-    &quot;next&quot;: null,
-    &quot;previous&quot;: null,
-    &quot;results&quot;: [
-        {
-            &quot;name&quot;: &quot;5-248-253-190-broadband.kyivstar.net&quot;,
-            &quot;created&quot;: &quot;2015-06-19T22:11:27&quot;,
-            &quot;updated&quot;: &quot;2015-06-19T22:11:43&quot;,
-            &quot;sources&quot;: [
-                &quot;phishtank.com&quot;
-            ],
-            &quot;ips&quot;: [
-                &quot;https://cymon.io/api/nexus/v1/ip/5.248.253.190&quot;
-            ],
-            &quot;urls&quot;: [],
-            &quot;events&quot;: &quot;https://cymon.io/api/nexus/v1/domain/5-248-253-190-broadband.kyivstar.net/events&quot;
-        }
-    ]
+  &quot;count&quot;: 1,
+  &quot;next&quot;: null,
+  &quot;previous&quot;: null,
+  &quot;results&quot;: [
+    {
+      &quot;name&quot;: &quot;shower-radio.com&quot;,
+      &quot;created&quot;: &quot;2015-10-19T16:22:58Z&quot;,
+      &quot;updated&quot;: &quot;2015-10-20T16:23:22Z&quot;
+    }
+  ]
 }
 </code></pre>
 
@@ -406,24 +378,16 @@ The offset indicates the starting position of the query in relation to the compl
 
 <h3 id="sample-response-body_3">Sample response body</h3>
 <pre><code class="json">{
-    &quot;count&quot;: 29,
-    &quot;next&quot;: &quot;https://cymon.io/api/nexus/v1/ip/74.220.203.57/urls?offset=10&quot;,
-    &quot;previous&quot;: null,
-    &quot;results&quot;: [
-        {
-            &quot;location&quot;: &quot;http://ortegatraders.com/&quot;,
-            &quot;created&quot;: &quot;2015-07-07T13:47:57&quot;,
-            &quot;updated&quot;: &quot;2015-07-07T13:47:57&quot;,
-            &quot;sources&quot;: [
-                &quot;virustotal.com&quot;
-            ],
-            &quot;ips&quot;: [
-                &quot;https://cymon.io/api/nexus/v1/ip/74.220.203.57&quot;
-            ],
-            &quot;domain&quot;: &quot;https://cymon.io/api/nexus/v1/domain/ortegatraders.com&quot;
-        },
-        ...
-    ]
+  &quot;count&quot;: 1,
+  &quot;next&quot;: null,
+  &quot;previous&quot;: null,
+  &quot;results&quot;: [
+    {
+      &quot;location&quot;: &quot;http://alfaqui.com/~buzon/21/09.exe&quot;,
+      &quot;created&quot;: &quot;2015-09-07T18:29:57Z&quot;,
+      &quot;updated&quot;: &quot;2015-09-07T18:29:57Z&quot;
+    }
+  ]
 }
 </code></pre>
 
@@ -597,6 +561,26 @@ The offset indicates the starting position of the query in relation to the compl
         &quot;https://cymon.io/api/nexus/v1/ip/94.75.240.108&quot;
     ],
     &quot;domain&quot;: &quot;https://cymon.io/api/nexus/v1/domain/faker.su&quot;
+}
+</code></pre>
+
+<h1 id="pagination">Pagination</h1>
+<p>Cymon API uses "Limit-Offset" pagination.
+The client includes both a "limit" and an "offset" query parameter. 
+The limit indicates the maximum number of items to return. The default limit size is 10. 
+The offset indicates the starting position of the query in relation to the complete set of unpaginated items.</p>
+<p>Request example:</p>
+<pre><code class="http">GET https://cymon.io/api/nexus/v1/ip/x.x.x.x/events/?limit=100&amp;offset=400
+</code></pre>
+
+<p>Response:</p>
+<pre><code class="json">{
+    &quot;count&quot;: 1023,
+    &quot;next&quot;: &quot;https://cymon.io/api/nexus/v1/ip/x.x.x.x/events/?limit=100&amp;offset=500&quot;,
+    &quot;previous&quot;: &quot;https://cymon.io/api/nexus/v1/ip/x.x.x.x/events/?limit=100&amp;offset=300&quot;,
+    &quot;results&quot;: [
+        ...
+    ]
 }
 </code></pre></div>
         </div>
