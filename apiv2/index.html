@@ -129,6 +129,8 @@
         
             <li><a href="#nodejs-example">Node.js example</a></li>
         
+            <li><a href="#python-connection-library-example">Python connection library example</a></li>
+        
     
     </ul>
 </div></div>
@@ -764,6 +766,82 @@ module.exports.handler = function () {
     });
   });
 };
+</code></pre>
+
+<h3 id="python-connection-library-example">Python connection library example</h3>
+<pre><code class="python">import requests
+import time
+from datetime import datetime
+
+class Cymon(object):
+    def __init__(self, username, password, endpoint='https://api.cymon.io'):
+        self.endpoint = endpoint
+        self.creds = {&quot;username&quot;: username, &quot;password&quot;: password}
+        self.token = None
+        self.token_expiry = None
+
+    def login(self):
+        headers = {
+            'Content-Type': 'application/json'
+        }
+        res = requests.post(self.endpoint + &quot;/auth/login&quot;, json=self.creds, headers=headers)
+        r.raise_for_status()
+        self.token = res.json().get('jwt')
+        self.token_expiry = datetime.fromtimestamp(res.json().get('expires'))
+        return self.token
+
+    def get(self, path):
+        self.check_token()
+        headers = {
+            &quot;Authorization&quot;: &quot;Bearer {}&quot;.format(self.token)
+        }
+        r = request.get(self.endpoint + path, headers=headers)
+        r.raise_for_status()
+        return r
+
+    def post(self, path, params):
+        self.check_token()
+        headers = {
+            &quot;Authorization&quot;: &quot;Bearer {}&quot;.format(self.token),
+            'Content-Type': 'application/json'
+        }
+        r = request.post(self.endpoint + path, json=params, headers=headers)
+        r.raise_for_status()
+        return r
+
+    def check_token(self):
+        if self.token is None or self.token_expiry is None:
+            self.login()
+        if datetime.utcnow() &gt; self.token_expiry:
+          self.login()
+
+# initialize connection object
+cymon = Cymon(&quot;user&quot;, &quot;mypassword&quot;)
+
+# create new feed
+cymon.post(&quot;/feeds&quot;, {
+    &quot;name&quot;: &quot;Test Feed&quot;,
+    &quot;link&quot;: &quot;https://feed-website.example.com&quot;,
+    &quot;privacy&quot;: &quot;private&quot;,
+    &quot;tags&quot;: [&quot;malware&quot;, &quot;botnet&quot;],
+    &quot;members&quot;: [&quot;username1&quot;],
+    &quot;guests&quot;: [&quot;username2&quot;, &quot;username3&quot;]
+})
+
+# submit new IoC report
+cymon.post(&quot;/submit&quot;, {
+    &quot;report&quot;: {
+        &quot;feed&quot;: &quot;Test Feed&quot;,
+        &quot;title&quot;: &quot;IoC description text&quot;,
+        &quot;timestamp&quot;: int(time.time()),
+        &quot;tags&quot;: [&quot;test&quot;],
+        &quot;iocs&quot;: {
+            &quot;ipv4&quot;: &quot;127.0.0.1&quot;,
+            &quot;url&quot;: &quot;http://localhost&quot;,
+            &quot;hostname&quot;: &quot;localhost.localdomain&quot;
+        }
+    }
+})
 </code></pre></div>
         </div>
 
