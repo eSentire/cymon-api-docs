@@ -776,36 +776,32 @@ from datetime import datetime
 class Cymon(object):
     def __init__(self, username, password, endpoint='https://api.cymon.io'):
         self.endpoint = endpoint
-        self.creds = {&quot;username&quot;: username, &quot;password&quot;: password}
+        self.creds = {'username': username, 'password': password}
         self.token = None
         self.token_expiry = None
 
     def login(self):
-        headers = {
-            'Content-Type': 'application/json'
-        }
-        res = requests.post(self.endpoint + &quot;/auth/login&quot;, json=self.creds, headers=headers)
+        h = {'Content-Type': 'application/json'}
+        r = requests.post(self.endpoint + '/auth/login', json=self.creds, headers=h)
         r.raise_for_status()
-        self.token = res.json().get('jwt')
-        self.token_expiry = datetime.fromtimestamp(res.json().get('expires'))
+        self.token = r.json().get('jwt')
+        self.token_expiry = datetime.fromtimestamp(r.json().get('expires'))
         return self.token
 
     def get(self, path):
         self.check_token()
-        headers = {
-            &quot;Authorization&quot;: &quot;Bearer {}&quot;.format(self.token)
-        }
-        r = request.get(self.endpoint + path, headers=headers)
+        h = {'Authorization': 'Bearer {}'.format(self.token)}
+        r = request.get(self.endpoint + path, headers=h)
         r.raise_for_status()
         return r
 
     def post(self, path, params):
         self.check_token()
-        headers = {
-            &quot;Authorization&quot;: &quot;Bearer {}&quot;.format(self.token),
+        h = {
+            'Authorization': 'Bearer {}'.format(self.token),
             'Content-Type': 'application/json'
         }
-        r = request.post(self.endpoint + path, json=params, headers=headers)
+        r = request.post(self.endpoint + path, json=params, headers=h)
         r.raise_for_status()
         return r
 
@@ -813,7 +809,7 @@ class Cymon(object):
         if self.token is None or self.token_expiry is None:
             self.login()
         if datetime.utcnow() &gt; self.token_expiry:
-          self.login()
+            self.login()
 
 # initialize connection object
 cymon = Cymon(&quot;user&quot;, &quot;mypassword&quot;)
