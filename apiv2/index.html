@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+
+	<title>V2 - Cymon API Docs</title>
+
+        <link href="../css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="../css/font-awesome-4.0.3.css" rel="stylesheet">
+        <link rel="stylesheet" href="../css/highlight.css">
+        <link href="../css/base.css" rel="stylesheet">
+
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+
+        
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <!-- Main title -->
+            <a class="navbar-brand" href="..">Cymon API Docs</a>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+            <!-- Main navigation -->
+            <ul class="nav navbar-nav">
+            
+            
+                <li >
+                    <a href="..">Home</a>
+                </li>
+            
+            
+            
+                <li class="active">
+                    <a href="./">V2</a>
+                </li>
+            
+            
+            
+                <li >
+                    <a href="../clients/">Clients</a>
+                </li>
+            
+            
+            </ul>
+
+            <!-- Search, Navigation and Repo links -->
+            <ul class="nav navbar-nav navbar-right">
+                <li >
+                    <a rel="next" href="..">
+                        <i class="fa fa-arrow-left"></i> Previous
+                    </a>
+                </li>
+                <li >
+                    <a rel="prev" href="../clients/">
+                        Next <i class="fa fa-arrow-right"></i>
+                    </a>
+                </li>
+                
+            </ul>
+        </div>
+    </div>
+</div>
+
+        <div class="container">
+            <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+    
+        <li class="main active"><a href="#cymon-api-v20">Cymon API v2.0</a></li>
+        
+    
+        <li class="main "><a href="#feeds-api">Feeds API</a></li>
+        
+            <li><a href="#create-feed">Create Feed</a></li>
+        
+            <li><a href="#update-feed">Update Feed</a></li>
+        
+            <li><a href="#list-feeds">List Feeds</a></li>
+        
+            <li><a href="#feed-details">Feed Details</a></li>
+        
+    
+        <li class="main "><a href="#ioc-api">IoC API</a></li>
+        
+            <li><a href="#submit-ioc">Submit IoC</a></li>
+        
+    
+        <li class="main "><a href="#query-api">Query API</a></li>
+        
+            <li><a href="#search-by-tags">Search by Tags</a></li>
+        
+            <li><a href="#search-by-ioc">Search by IoC</a></li>
+        
+    
+        <li class="main "><a href="#authentication">Authentication</a></li>
+        
+    
+        <li class="main "><a href="#pagination">Pagination</a></li>
+        
+    
+        <li class="main "><a href="#examples">Examples</a></li>
+        
+            <li><a href="#python-example">Python example</a></li>
+        
+            <li><a href="#nodejs-example">Node.js example</a></li>
+        
+    
+    </ul>
+</div></div>
+            <div class="col-md-9" role="main">
+
+<h2 id="cymon-api-v20">Cymon API v2.0</h2>
+<p>The goal of the new release is to create an easy-to-use "threat exchange" for Indicators of Compromise (IoC).</p>
+<p>New features include:</p>
+<ul>
+<li>Users can create their own feeds</li>
+<li>Feeds can be public or only shared with specific users</li>
+<li>Feeds can have any number of Guests, Members and Admins<ul>
+<li>Guests have read-only access</li>
+<li>Members can submit IoCs</li>
+<li>Admins can change feed settings</li>
+</ul>
+</li>
+<li>IoC and Feed objects can have any number of tags</li>
+<li>Powerful search API powered by Elasticsearch</li>
+</ul>
+<p>The API is not generally available yet.
+We posted the documentation early so we can get feedback from the community.
+Get in touch if you have comments: info@cymon.io</p>
+<h2 id="feeds-api">Feeds API</h2>
+<h3 id="create-feed">Create Feed</h3>
+<p>Register a new user-feed.</p>
+<table>
+    <tr>
+        <th>Path</th>
+        <td>/feeds/</td>
+    </tr>
+    <tr>
+        <th>Method</th>
+        <td>POST</td>
+    </tr>
+    <tr>
+        <th>Authentication required</th>
+        <td>Yes</td>
+    </tr>
+</table>
+
+<h4 id="request-parameters">Request parameters</h4>
+<table>
+    <tr>
+        <th>Parameter</th>
+        <th>Type</th>
+        <th>Required</th>
+        <th>Location</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td><tt>feed</tt></td>
+        <td>JSON</td>
+        <td>Yes</td>
+        <td>body</td>
+        <td>Feed object</td>
+    </tr>
+</table>
+
+<h4 id="feed-object">Feed object</h4>
+<table>
+    <tr>
+        <th>Attribute</th>
+        <th>Type</th>
+        <th>Required</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td><tt>name</tt></td>
+        <td>string</td>
+        <td>Yes</td>
+        <td>Unique feed name (case sensitive)</td>
+    </tr>
+    <tr>
+        <td><tt>link</tt></td>
+        <td>string</td>
+        <td>Yes</td>
+        <td>Website for more information</td>
+    </tr>
+    <tr>
+        <td><tt>privacy</tt></td>
+        <td>string</td>
+        <td>Yes</td>
+        <td>Value can be <tt>public</tt> or <tt>private</tt></td>
+    </tr>
+    <tr>
+        <td><tt>tags</tt></td>
+        <td>list of strings</td>
+        <td>Yes</td>
+        <td>tags to help identify the feed</td>
+    </tr>
+    <tr>
+        <td><tt>admins</tt></td>
+        <td>list of strings</td>
+        <td>No</td>
+        <td>Users that can update feed</td>
+    </tr>
+    <tr>
+        <td><tt>members</tt></td>
+        <td>list of strings</td>
+        <td>No</td>
+        <td>Users that can submit and read IoCs</td>
+    </tr>
+    <tr>
+        <td><tt>guests</tt></td>
+        <td>list of strings</td>
+        <td>No</td>
+        <td>Users with read-only access</td>
+    </tr>
+</table>
+
+<blockquote>
+<p>Setting a feed as <strong><em>private</em></strong> will only allow <code>admins</code>, <code>members</code> or <code>guests</code> to access it.</p>
+</blockquote>
+<h4 id="sample-feed-object">Sample feed object</h4>
+<pre><code class="json">{
+  &quot;name&quot;: &quot;Feed Name&quot;,
+  &quot;link&quot;: &quot;https://feed-website.example.com&quot;,
+  &quot;privacy&quot;: &quot;public&quot;,
+  &quot;tags&quot;: [&quot;malware&quot;, &quot;botnet&quot;],
+  &quot;admins&quot;: [&quot;username1&quot;],
+  &quot;members&quot;: [&quot;username2&quot;, &quot;username3&quot;],
+  &quot;guests&quot;: [&quot;username4&quot;, &quot;username5&quot;]
+}
+</code></pre>
+
+<h4 id="sample-response-body">Sample response body</h4>
+<pre><code>{&quot;status&quot;: 200, &quot;message&quot;: &quot;feed created&quot;}
+</code></pre>
+
+<h3 id="update-feed">Update Feed</h3>
+<p>Update feed details.</p>
+<blockquote>
+<p>Note that the <code>name</code> field is immutable</p>
+</blockquote>
+<table>
+    <tr>
+        <th>Path</th>
+        <td>/feeds/</td>
+    </tr>
+    <tr>
+        <th>Method</th>
+        <td>PUT</td>
+    </tr>
+    <tr>
+        <th>Authentication required</th>
+        <td>Yes</td>
+    </tr>
+</table>
+
+<table>
+    <tr>
+        <th>Parameter</th>
+        <th>Type</th>
+        <th>Required</th>
+        <th>Location</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td><tt>feed</tt></td>
+        <td>JSON</td>
+        <td>Yes</td>
+        <td>body</td>
+        <td>Feed object</td>
+    </tr>
+</table>
+
+<h4 id="sample-feed-object_1">Sample feed object</h4>
+<pre><code class="json">{
+  &quot;name&quot;: &quot;Feed Name&quot;,
+  &quot;link&quot;: &quot;https://feed-website.example.com&quot;,
+  &quot;privacy&quot;: &quot;private&quot;,
+  &quot;tags&quot;: [&quot;malware&quot;, &quot;botnet&quot;],
+  &quot;admins&quot;: [&quot;username1&quot;],
+  &quot;members&quot;: [&quot;username2&quot;, &quot;username3&quot;],
+  &quot;guests&quot;: []
+}
+</code></pre>
+
+<h4 id="sample-response-body_1">Sample response body</h4>
+<pre><code>{&quot;status&quot;: 200, &quot;message&quot;: &quot;feed updated&quot;}
+</code></pre>
+
+<h3 id="list-feeds">List Feeds</h3>
+<p>List of all feeds on Cymon.</p>
+<table>
+    <tr>
+        <th>Path</th>
+        <td>/feeds/</td>
+    </tr>
+    <tr>
+        <th>Method</th>
+        <td>GET</td>
+    </tr>
+    <tr>
+        <th>Authentication required</th>
+        <td>Yes</td>
+    </tr>
+</table>
+
+<h4 id="sample-response-body_2">Sample response body</h4>
+<pre><code class="json">{
+  &quot;feeds&quot;: [
+    &quot;test&quot;
+  ],
+  &quot;total&quot;: 1,
+  &quot;count&quot;: 1
+}
+</code></pre>
+
+<h3 id="feed-details">Feed Details</h3>
+<p>Get details for specified feed.</p>
+<table>
+    <tr>
+        <th>Path</th>
+        <td>/feeds/{feed_name}</td>
+    </tr>
+    <tr>
+        <th>Method</th>
+        <td>GET</td>
+    </tr>
+    <tr>
+        <th>Authentication required</th>
+        <td>Yes</td>
+    </tr>
+</table>
+
+<h4 id="request-parameters_1">Request parameters</h4>
+<table>
+    <tr>
+        <th>Parameter</th>
+        <th>Type</th>
+        <th>Required</th>
+        <th>Location</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td><tt>feed_name</tt></td>
+        <td>String</td>
+        <td>Yes</td>
+        <td>path</td>
+        <td>Feed name</td>
+    </tr>
+</table>
+
+<h4 id="sample-response-body_3">Sample response body</h4>
+<pre><code class="json">{
+  &quot;name&quot;: &quot;test&quot;,
+  &quot;link&quot;: &quot;http://example.com&quot;,
+  &quot;tags&quot;: [
+    &quot;roy&quot;,
+    &quot;test&quot;
+  ],
+  &quot;privacy&quot;: &quot;public&quot;,
+  &quot;reliability&quot;: &quot;60&quot;,
+  &quot;contributor&quot;: &quot;roy&quot;
+}
+</code></pre>
+
+<h2 id="ioc-api">IoC API</h2>
+<h3 id="submit-ioc">Submit IoC</h3>
+<p>Report IoC</p>
+<table>
+    <tr>
+        <th>Path</th>
+        <td>/submit/</td>
+    </tr>
+    <tr>
+        <th>Method</th>
+        <td>POST</td>
+    </tr>
+    <tr>
+        <th>Authentication required</th>
+        <td>Yes</td>
+    </tr>
+</table>
+
+<h4 id="request-parameters_2">Request parameters</h4>
+<table>
+    <tr>
+        <th>Parameter</th>
+        <th>Type</th>
+        <th>Required</th>
+        <th>Location</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td><tt>report</tt></td>
+        <td>JSON</td>
+        <td>Yes</td>
+        <td>body</td>
+        <td>Report object</td>
+    </tr>
+</table>
+
+<h4 id="report-object">Report object</h4>
+<table>
+    <tr>
+        <th>Attribute</th>
+        <th>Type</th>
+        <th>Required</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td><tt>timestamp</tt></td>
+        <td>integer</td>
+        <td>Yes</td>
+        <td>Epoch timestamp</td>
+    </tr>
+    <tr>
+        <td><tt>feed</tt></td>
+        <td>string</td>
+        <td>Yes</td>
+        <td>Existing feed name</td>
+    </tr>
+    <tr>
+        <td><tt>title</tt></td>
+        <td>string</td>
+        <td>Yes</td>
+        <td>Short description</td>
+    </tr>
+    <tr>
+        <td><tt>description</tt></td>
+        <td>string</td>
+        <td>No</td>
+        <td>Full-text description</td>
+    </tr>
+    <tr>
+        <td><tt>score</tt></td>
+        <td>integer</td>
+        <td>No</td>
+        <td>Threat score</td>
+    </tr>
+    <tr>
+        <td><tt>link</tt></td>
+        <td>string</td>
+        <td>No</td>
+        <td>Link for more details on this IoC</td>
+    </tr>
+    <tr>
+        <td><tt>tags</tt></td>
+        <td>list of strings</td>
+        <td>Yes</td>
+        <td>IoC tags</td>
+    </tr>
+    <tr>
+        <td><tt>iocs</tt></td>
+        <td>object</td>
+        <td>Yes</td>
+        <td>IoC patterns. Accepted keys: <tt>ipv4</tt>, <tt>ipv6</tt>, <tt>domain</tt>, <tt>hostname</tt>, <tt>url</tt>, <tt>md5</tt>, <tt>sha1</tt>, <tt>sha256</tt>, <tt>ssdeep</tt></td>
+    </tr>
+</table>
+
+<p>You are encouraged to use at least one of the following common tags:</p>
+<ul>
+<li>malware</li>
+<li>botnet</li>
+<li>phishing</li>
+<li>ransomware</li>
+<li>ek</li>
+<li>scan</li>
+<li>bruteforce</li>
+<li>malicious activity</li>
+</ul>
+<p>You can also include additional tags, such as malware name (eg. cryptowall) for easy searching.</p>
+<h4 id="sample-report-object">Sample report object</h4>
+<pre><code class="json">{
+    &quot;report&quot;: {
+        &quot;feed&quot;: &quot;test&quot;,
+        &quot;title&quot;: &quot;IoC description text&quot;,
+        &quot;timestamp&quot;: 1464153681,
+        &quot;tags&quot;: [&quot;test&quot;],
+        &quot;iocs&quot;: {
+            &quot;ipv4&quot;: &quot;127.0.0.1&quot;,
+            &quot;url&quot;: &quot;http://localhost&quot;,
+            &quot;hostname&quot;: &quot;localhost.localdomain&quot;
+        }
+    }
+}
+</code></pre>
+
+<h4 id="sample-response-body_4">Sample response body</h4>
+<pre><code>{&quot;status&quot;: 200, &quot;message&quot;: &quot;report accepted&quot;}
+</code></pre>
+
+<h2 id="query-api">Query API</h2>
+<h3 id="search-by-tags">Search by Tags</h3>
+<p>Search IoC reports by one or more tags.</p>
+<table>
+    <tr>
+        <th>Path</th>
+        <td>/query/tags/{tags}</td>
+    </tr>
+    <tr>
+        <th>Method</th>
+        <td>GET</td>
+    </tr>
+    <tr>
+        <th>Authentication required</th>
+        <td>Yes</td>
+    </tr>
+</table>
+
+<h4 id="request-parameters_3">Request parameters</h4>
+<table>
+    <tr>
+        <th>Parameter</th>
+        <th>Type</th>
+        <th>Required</th>
+        <th>Location</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td><tt>tags</tt></td>
+        <td>string</td>
+        <td>Yes</td>
+        <td>path</td>
+        <td>Comma separated tags</td>
+    </tr>
+</table>
+
+<h4 id="sample-request">Sample request</h4>
+<pre><code class="http">GET /query/tags/dnsbl,spam,malicious%20activity
+</code></pre>
+
+<blockquote>
+<p>Special characters must be url-encoded</p>
+</blockquote>
+<h4 id="sample-response-body_5">Sample response body</h4>
+<pre><code class="json">{
+  &quot;status&quot;: 200,
+  &quot;hits&quot;: [
+    {
+      &quot;feed&quot;: &quot;cbl.abuseat.org&quot;,
+      &quot;description&quot;: &quot;&quot;,
+      &quot;tags&quot;: [
+        &quot;malicious activity&quot;,
+        &quot;dnsbl&quot;,
+        &quot;spam&quot;
+      ],
+      &quot;timestamp&quot;: &quot;2016-06-25T16:02:47.000Z&quot;,
+      &quot;iocs&quot;: {
+        &quot;ipv4&quot;: &quot;91.216.107.90&quot;
+      },
+      &quot;title&quot;: &quot;Blacklisted by cbl.abuseat.org&quot;
+    },
+    ...
+  ],
+  &quot;total&quot;: 4,
+  &quot;count&quot;: 4
+}
+</code></pre>
+
+<h3 id="search-by-ioc">Search by IoC</h3>
+<p>Search reports by IoC.</p>
+<table>
+    <tr>
+        <th>Path</th>
+        <td>/query/ioc/{ioc_type}/{ioc_value}</td>
+    </tr>
+    <tr>
+        <th>Method</th>
+        <td>GET</td>
+    </tr>
+    <tr>
+        <th>Authentication required</th>
+        <td>Yes</td>
+    </tr>
+</table>
+
+<h4 id="request-parameters_4">Request parameters</h4>
+<table>
+    <tr>
+        <th>Parameter</th>
+        <th>Type</th>
+        <th>Required</th>
+        <th>Location</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td><tt>ioc_type</tt></td>
+        <td>string</td>
+        <td>Yes</td>
+        <td>path</td>
+        <td>Accepted keys: <tt>ipv4</tt>, <tt>ipv6</tt>, <tt>domain</tt>, <tt>hostname</tt>, <tt>url</tt>, <tt>md5</tt>, <tt>sha1</tt>, <tt>sha256</tt>, <tt>ssdeep</tt></td>
+    </tr>
+    <tr>
+        <td><tt>ioc_value</tt></td>
+        <td>string</td>
+        <td>Yes</td>
+        <td>path</td>
+        <td>IoC value</td>
+    </tr>
+</table>
+
+<h4 id="sample-request_1">Sample request</h4>
+<pre><code class="http">GET /query/ioc/ipv4/91.216.107.90
+</code></pre>
+
+<h4 id="sample-response-body_6">Sample response body</h4>
+<pre><code class="json">{
+  &quot;status&quot;: 200,
+  &quot;hits&quot;: [
+    {
+      &quot;feed&quot;: &quot;cbl.abuseat.org&quot;,
+      &quot;description&quot;: &quot;&quot;,
+      &quot;tags&quot;: [
+        &quot;malicious activity&quot;,
+        &quot;dnsbl&quot;,
+        &quot;spam&quot;
+      ],
+      &quot;timestamp&quot;: &quot;2016-06-25T16:02:47.000Z&quot;,
+      &quot;iocs&quot;: {
+        &quot;ipv4&quot;: &quot;91.216.107.90&quot;
+      },
+      &quot;title&quot;: &quot;Blacklisted by cbl.abuseat.org&quot;
+    },
+    ...
+  ],
+  &quot;total&quot;: 4,
+  &quot;count&quot;: 4
+}
+</code></pre>
+
+<h2 id="authentication">Authentication</h2>
+<p>API access requires authentication using <a href="https://en.wikipedia.org/wiki/JSON_Web_Token">JSON Web Token (JWT)</a>.</p>
+<p>Process overview:</p>
+<ol>
+<li>POST credentials to the Login API, receive token.</li>
+<li>Send token in header of each request, until it expires.</li>
+<li>Re-authenticate when token expires.</li>
+</ol>
+<p>The following diagram shows this process:</p>
+<p><image src="https://cdn.auth0.com/content/jwt/jwt-diagram.png" alt="jwt process" width="100%"/></p>
+<blockquote>
+<p>Visit <a href="https://jwt.io/introduction/">jwt.io</a> to learn more about JSON Web Tokens</p>
+</blockquote>
+<p>Authentication example:</p>
+<pre><code class="bash">curl -X POST https://api.cymon.io/auth/login \
+-d '{&quot;username&quot;: &quot;example&quot;, &quot;password&quot;: &quot;monkey&quot;}' \
+-H 'Content-Type: application/json'
+</code></pre>
+
+<p>Response body example:</p>
+<pre><code class="json">{
+  &quot;jwt&quot;: &quot;eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjEzODY4OTkxMzEsImlzcyI6ImppcmE6MTU0ODk1OTUiLCJxc2giOiI4MDYzZmY0Y2ExZTQxZGY3YmM5MGM4YWI2ZDBmNjIwN2Q0OTFjZjZkYWQ3YzY2ZWE3OTdiNDYxNGI3MTkyMmU5IiwiaWF0IjoxMzg2ODk4OTUxfQ.uKqU9dTB6gKwG6jQCuXYAiMNdfNRw98Hw_IWuA5MaMo&quot;
+}
+</code></pre>
+
+<p>See full example <a href="#examples">here</a>.</p>
+<blockquote>
+<p>If you don't have a Cymon account, you can create one <a href="https://cymon.io/user/signup">here</a></p>
+</blockquote>
+<h2 id="pagination">Pagination</h2>
+<p>Cymon API uses "Limit-Offset" pagination.
+The client includes both a "limit" and an "offset" query parameter.
+The limit indicates the maximum number of items to return. The max limit size is 10.
+The offset indicates the starting position of the query in relation to the complete set of unpaginated items.</p>
+<blockquote>
+<p>The free API will not return results beyond <code>?offset=1000</code> to help maintain the service's health</p>
+</blockquote>
+<p>Request example:</p>
+<pre><code class="http">GET https://api.cymon.io/query/tags/malware?limit=5&amp;offset=5
+</code></pre>
+
+<p>Response:</p>
+<pre><code class="json">{
+    &quot;status&quot;: 200,
+    &quot;total&quot;: 10,
+    &quot;count&quot;: 5,
+    &quot;hits&quot;: [
+        ...
+    ]
+}
+</code></pre>
+
+<h2 id="examples">Examples</h2>
+<h3 id="python-example">Python example</h3>
+<pre><code class="python">import requests
+
+# authenticate using username/password combo
+auth = requests.post(&quot;https://api.cymon.io/auth/login&quot;, json={&quot;username&quot;: &quot;example&quot;, &quot;password&quot;: &quot;test&quot;})
+
+# parse JSON response
+token = auth.json()['jwt']
+
+# prepare headers for API query
+headers = {
+  &quot;Authorization&quot;: &quot;Bearer {}&quot;.format(token),
+  &quot;Content-Type&quot;: &quot;application/json&quot;
+}
+
+# send API request with auth token
+response = requests.get(&quot;https://api.cymon.io/query/tags/malware&quot;, headers=headers)
+
+# print response
+if response.status_code == 200:
+  print response.text
+else:
+  print &quot;Status code was: {}&quot;.format(response.status_code)
+</code></pre>
+
+<h3 id="nodejs-example">Node.js example</h3>
+<pre><code class="javascript">var request = require('request');
+
+module.exports.login = function (callback) {
+  var params = {
+    method: &quot;POST&quot;,
+    body: {username: &quot;example&quot;, password: &quot;test&quot;},
+    json: true,
+    url: &quot;https://api.cymon.io/auth/login&quot;
+  };
+  request(params, callback);
+};
+
+module.exports.getEventsByTag = function (token, callback) {
+  var params = {
+    method: &quot;GET&quot;,
+    url: &quot;https://api.cymon.io/query/tags/malware&quot;,
+    headers: {
+      Authorization: &quot;Bearer &quot; + token
+    }
+  };
+  request(params, callback);
+};
+
+module.exports.handler = function () {
+  // authenticate
+  exports.login(function (error, auth_res) {
+    var token = auth_res.body.jwt;
+
+    // send API request with authorization token
+    exports.getEventsByTag(token, function (error, res) {
+      console.log(res.body);
+    });
+  });
+};
+</code></pre></div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            
+            <center>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</center>
+        </footer>
+
+        <script src="../js/jquery-1.10.2.min.js"></script>
+        <script src="../js/bootstrap-3.0.3.min.js"></script>
+        <script src="../js/highlight.pack.js"></script>
+        <script src="../js/base.js"></script>
+    </body>
+</html>
