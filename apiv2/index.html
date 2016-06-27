@@ -125,11 +125,9 @@
     
         <li class="main "><a href="#examples">Examples</a></li>
         
-            <li><a href="#python-example">Python example</a></li>
-        
             <li><a href="#nodejs-example">Node.js example</a></li>
         
-            <li><a href="#python-connection-library-example">Python connection library example</a></li>
+            <li><a href="#python-example">Python example</a></li>
         
     
     </ul>
@@ -137,7 +135,7 @@
             <div class="col-md-9" role="main">
 
 <h2 id="cymon-api-v20">Cymon API v2.0</h2>
-<p>The goal of the new release is to create an easy-to-use "threat exchange" for Indicators of Compromise (IoC).</p>
+<p>The focus of the new release is to create an easy-to-use "threat exchange" for Indicators of Compromise (IoC).</p>
 <p>New features include:</p>
 <ul>
 <li>Users can create their own feeds</li>
@@ -457,12 +455,6 @@ Get in touch if you have comments: info@cymon.io</p>
         <td>Full-text description</td>
     </tr>
     <tr>
-        <td><tt>score</tt></td>
-        <td>integer</td>
-        <td>No</td>
-        <td>Threat score</td>
-    </tr>
-    <tr>
         <td><tt>link</tt></td>
         <td>string</td>
         <td>No</td>
@@ -498,7 +490,8 @@ Get in touch if you have comments: info@cymon.io</p>
 <pre><code class="json">{
     &quot;report&quot;: {
         &quot;feed&quot;: &quot;test&quot;,
-        &quot;title&quot;: &quot;IoC description text&quot;,
+        &quot;title&quot;: &quot;Short IoC title text&quot;,
+        &quot;description&quot;: &quot;Detailed description text&quot;,
         &quot;timestamp&quot;: 1464153681,
         &quot;tags&quot;: [&quot;test&quot;],
         &quot;iocs&quot;: {
@@ -674,7 +667,29 @@ Get in touch if you have comments: info@cymon.io</p>
 
 <p>Response body example:</p>
 <pre><code class="json">{
-  &quot;jwt&quot;: &quot;eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjEzODY4OTkxMzEsImlzcyI6ImppcmE6MTU0ODk1OTUiLCJxc2giOiI4MDYzZmY0Y2ExZTQxZGY3YmM5MGM4YWI2ZDBmNjIwN2Q0OTFjZjZkYWQ3YzY2ZWE3OTdiNDYxNGI3MTkyMmU5IiwiaWF0IjoxMzg2ODk4OTUxfQ.uKqU9dTB6gKwG6jQCuXYAiMNdfNRw98Hw_IWuA5MaMo&quot;
+  &quot;jwt&quot;: &quot;eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjEzODY4OTkxMzEsImlzcyI6ImppcmE6MTU0ODk1OTUiLCJxc2giOiI4MDYzZmY0Y2ExZTQxZGY3YmM5MGM4YWI2ZDBmNjIwN2Q0OTFjZjZkYWQ3YzY2ZWE3OTdiNDYxNGI3MTkyMmU5IiwiaWF0IjoxMzg2ODk4OTUxfQ.uKqU9dTB6gKwG6jQCuXYAiMNdfNRw98Hw_IWuA5MaMo&quot;,
+  &quot;expires&quot;: 1466972778,
+  &quot;created&quot;: 1466969178,
+  &quot;status&quot;: 200
+}
+</code></pre>
+
+<p>Authenticated requests made to the Cymon API need to include your token in the <code>Authorization</code> HTTP header.
+The key should be prefixed by the string literal "Bearer", with whitespace separating the two strings. For example:</p>
+<pre><code class="http">GET /query/tags/ransomware HTTP/1.1
+Host: api.cymon.io
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjEzODY4OTkxMzEsImlzcyI6ImppcmE6MTU0ODk1OTUiLCJxc2giOiI4MDYzZmY0Y2ExZTQxZGY3YmM5MGM4YWI2ZDBmNjIwN2Q0OTFjZjZkYWQ3YzY2ZWE3OTdiNDYxNGI3MTkyMmU5IiwiaWF0IjoxMzg2ODk4OTUxfQ.uKqU9dTB6gKwG6jQCuXYAiMNdfNRw98Hw_IWuA5MaMo
+</code></pre>
+
+<p>Authenticated request example:</p>
+<pre><code class="bash">curl -X GET https://api.cymon.io/query/tags/ransomware \
+-H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjEzODY4OTkxMzEsImlzcyI6ImppcmE6MTU0ODk1OTUiLCJxc2giOiI4MDYzZmY0Y2ExZTQxZGY3YmM5MGM4YWI2ZDBmNjIwN2Q0OTFjZjZkYWQ3YzY2ZWE3OTdiNDYxNGI3MTkyMmU5IiwiaWF0IjoxMzg2ODk4OTUxfQ.uKqU9dTB6gKwG6jQCuXYAiMNdfNRw98Hw_IWuA5MaMo'
+</code></pre>
+
+<p>Unauthenticated responses that are denied permission will result in an <code>HTTP 401 Unauthorized</code> response with an appropriate message in the body.
+For example:</p>
+<pre><code class="json">{
+  &quot;message&quot;: &quot;Unauthorized&quot;
 }
 </code></pre>
 
@@ -688,7 +703,8 @@ The client includes both a "limit" and an "offset" query parameter.
 The limit indicates the maximum number of items to return. The max limit size is 10.
 The offset indicates the starting position of the query in relation to the complete set of unpaginated items.</p>
 <blockquote>
-<p>The free API will not return results beyond <code>?offset=1000</code> to help maintain the service's health</p>
+<p>The free API will not return results beyond <code>?offset=1000</code> to help maintain the service's health
+(bulk API access is available to partners).</p>
 </blockquote>
 <p>Request example:</p>
 <pre><code class="http">GET https://api.cymon.io/query/tags/malware?limit=5&amp;offset=5
@@ -706,38 +722,20 @@ The offset indicates the starting position of the query in relation to the compl
 </code></pre>
 
 <h2 id="examples">Examples</h2>
-<h3 id="python-example">Python example</h3>
-<pre><code class="python">import requests
+<!--
+### Python example
 
-# authenticate using username/password combo
-auth = requests.post(&quot;https://api.cymon.io/auth/login&quot;, json={&quot;username&quot;: &quot;example&quot;, &quot;password&quot;: &quot;test&quot;})
+wzxhzdk:19
 
-# parse JSON response
-token = auth.json()['jwt']
-
-# prepare headers for API query
-headers = {
-  &quot;Authorization&quot;: &quot;Bearer {}&quot;.format(token),
-  &quot;Content-Type&quot;: &quot;application/json&quot;
-}
-
-# send API request with auth token
-response = requests.get(&quot;https://api.cymon.io/query/tags/malware&quot;, headers=headers)
-
-# print response
-if response.status_code == 200:
-  print response.text
-else:
-  print &quot;Status code was: {}&quot;.format(response.status_code)
-</code></pre>
+-->
 
 <h3 id="nodejs-example">Node.js example</h3>
 <pre><code class="javascript">var request = require('request');
 
-module.exports.login = function (callback) {
+module.exports.login = function (user, pass, callback) {
   var params = {
     method: &quot;POST&quot;,
-    body: {username: &quot;example&quot;, password: &quot;test&quot;},
+    body: {username: user, password: pass},
     json: true,
     url: &quot;https://api.cymon.io/auth/login&quot;
   };
@@ -755,9 +753,9 @@ module.exports.getEventsByTag = function (token, callback) {
   request(params, callback);
 };
 
-module.exports.handler = function () {
+module.exports.handler = function (user, pass) {
   // authenticate
-  exports.login(function (error, auth_res) {
+  exports.login(user, pass, function (error, auth_res) {
     var token = auth_res.body.jwt;
 
     // send API request with authorization token
@@ -768,7 +766,7 @@ module.exports.handler = function () {
 };
 </code></pre>
 
-<h3 id="python-connection-library-example">Python connection library example</h3>
+<h3 id="python-example">Python example</h3>
 <pre><code class="python">import requests
 import time
 from datetime import datetime
