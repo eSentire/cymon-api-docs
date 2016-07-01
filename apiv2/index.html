@@ -541,10 +541,22 @@ Get in touch if you have comments: info@cymon.io</p>
         <td>path</td>
         <td>Comma separated tags</td>
     </tr>
+    <tr>
+        <td><tt>from</tt></td>
+        <td>string</td>
+        <td>No</td>
+        <td>querystring</td>
+        <td>Date filter: <tt>YYYY-MM-DD</tt></td>
+    </tr>
 </table>
 
 <h4 id="sample-request">Sample request</h4>
+<p>No filters:</p>
 <pre><code class="http">GET /query/tags/dnsbl,spam,malicious%20activity
+</code></pre>
+
+<p>With <code>from</code> date filter:</p>
+<pre><code class="http">GET /query/tags/dnsbl,spam,malicious%20activity?from=2016-06-20
 </code></pre>
 
 <blockquote>
@@ -615,10 +627,22 @@ Get in touch if you have comments: info@cymon.io</p>
         <td>path</td>
         <td>IoC value</td>
     </tr>
+    <tr>
+        <td><tt>from</tt></td>
+        <td>string</td>
+        <td>No</td>
+        <td>querystring</td>
+        <td>Date filter: <tt>YYYY-MM-DD</tt></td>
+    </tr>
 </table>
 
-<h4 id="sample-request_1">Sample request</h4>
+<h4 id="sample-requests">Sample requests</h4>
+<p>No filters:</p>
 <pre><code class="http">GET /query/ioc/ipv4/91.216.107.90
+</code></pre>
+
+<p>With <code>from</code> date filter:</p>
+<pre><code class="http">GET /query/ioc/ipv4/91.216.107.90?from=2016-06-20
 </code></pre>
 
 <h4 id="sample-response-body_6">Sample response body</h4>
@@ -725,7 +749,7 @@ The offset indicates the starting position of the query in relation to the compl
 <!--
 ### Python example
 
-wzxhzdk:19
+wzxhzdk:21
 
 -->
 
@@ -789,7 +813,7 @@ class Cymon(object):
     def get(self, path):
         self.check_token()
         h = {'Authorization': 'Bearer {}'.format(self.token)}
-        r = request.get(self.endpoint + path, headers=h)
+        r = requests.get(self.endpoint + path, headers=h)
         r.raise_for_status()
         return r
 
@@ -799,7 +823,7 @@ class Cymon(object):
             'Authorization': 'Bearer {}'.format(self.token),
             'Content-Type': 'application/json'
         }
-        r = request.post(self.endpoint + path, json=params, headers=h)
+        r = requests.post(self.endpoint + path, json=params, headers=h)
         r.raise_for_status()
         return r
 
@@ -814,12 +838,14 @@ cymon = Cymon(&quot;user&quot;, &quot;mypassword&quot;)
 
 # create new feed
 cymon.post(&quot;/feeds&quot;, {
-    &quot;name&quot;: &quot;Test Feed&quot;,
-    &quot;link&quot;: &quot;https://feed-website.example.com&quot;,
-    &quot;privacy&quot;: &quot;private&quot;,
-    &quot;tags&quot;: [&quot;malware&quot;, &quot;botnet&quot;],
-    &quot;members&quot;: [&quot;username1&quot;],
-    &quot;guests&quot;: [&quot;username2&quot;, &quot;username3&quot;]
+    &quot;feed&quot;: {
+        &quot;name&quot;: &quot;Test Feed&quot;,
+        &quot;link&quot;: &quot;https://feed-website.example.com&quot;,
+        &quot;privacy&quot;: &quot;private&quot;,
+        &quot;tags&quot;: [&quot;malware&quot;, &quot;botnet&quot;],
+        &quot;members&quot;: [&quot;username1&quot;],
+        &quot;guests&quot;: [&quot;username2&quot;, &quot;username3&quot;]
+    }
 })
 
 # submit new IoC report
