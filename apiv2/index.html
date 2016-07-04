@@ -329,13 +329,67 @@ Get in touch if you have comments: info@cymon.io</p>
     </tr>
 </table>
 
+<h4 id="request-parameters_1">Request parameters</h4>
+<table>
+    <tr>
+        <th>Parameter</th>
+        <th>Type</th>
+        <th>Required</th>
+        <th>Location</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td><tt>filter</tt></td>
+        <td>string</td>
+        <td>No</td>
+        <td>querystring</td>
+        <td>Show feeds user has access to. Acceptable values: <tt>user</tt></td>
+    </tr>
+</table>
+
+<h4 id="sample-request">Sample request</h4>
+<p>No filters:</p>
+<pre><code class="http">GET /feeds
+</code></pre>
+
+<p>With <code>filter</code> parameter:</p>
+<pre><code class="http">GET /feeds?filter=user
+</code></pre>
+
 <h4 id="sample-response-body_2">Sample response body</h4>
 <pre><code class="json">{
   &quot;feeds&quot;: [
-    &quot;test&quot;
+    {
+        &quot;name&quot;: &quot;AlienVault&quot;,
+        &quot;link&quot;: &quot;https://www.alienvault.com&quot;,
+        &quot;privacy&quot;: &quot;public&quot;,
+        &quot;tags&quot;: [
+          &quot;malware&quot;,
+          &quot;spam&quot;,
+          &quot;scan&quot;,
+          &quot;botnet&quot;
+        ],
+        &quot;is_owner&quot;: false,
+        &quot;is_admin&quot;: false,
+        &quot;is_member&quot;: false,
+        &quot;is_guest&quot;: false
+      },
+      {
+        &quot;name&quot;: &quot;Google SafeBrowsing&quot;,
+        &quot;link&quot;: &quot;https://developers.google.com/safe-browsing/&quot;,
+        &quot;privacy&quot;: &quot;public&quot;,
+        &quot;tags&quot;: [
+          &quot;phishing&quot;,
+          &quot;malware&quot;
+        ],
+        &quot;is_owner&quot;: false,
+        &quot;is_admin&quot;: false,
+        &quot;is_member&quot;: false,
+        &quot;is_guest&quot;: false
+      }
   ],
-  &quot;total&quot;: 1,
-  &quot;count&quot;: 1
+  &quot;total&quot;: 2,
+  &quot;count&quot;: 2
 }
 </code></pre>
 
@@ -356,7 +410,7 @@ Get in touch if you have comments: info@cymon.io</p>
     </tr>
 </table>
 
-<h4 id="request-parameters_1">Request parameters</h4>
+<h4 id="request-parameters_2">Request parameters</h4>
 <table>
     <tr>
         <th>Parameter</th>
@@ -374,6 +428,13 @@ Get in touch if you have comments: info@cymon.io</p>
     </tr>
 </table>
 
+<h4 id="sample-request_1">Sample request</h4>
+<pre><code class="http">GET /feeds/My%20Feed
+</code></pre>
+
+<blockquote>
+<p>Special characters must be url-encoded</p>
+</blockquote>
 <h4 id="sample-response-body_3">Sample response body</h4>
 <pre><code class="json">{
   &quot;name&quot;: &quot;test&quot;,
@@ -404,7 +465,7 @@ Get in touch if you have comments: info@cymon.io</p>
     </tr>
 </table>
 
-<h4 id="request-parameters_2">Request parameters</h4>
+<h4 id="request-parameters_3">Request parameters</h4>
 <table>
     <tr>
         <th>Parameter</th>
@@ -474,18 +535,24 @@ Get in touch if you have comments: info@cymon.io</p>
     </tr>
 </table>
 
-<p>You are encouraged to use at least one of the following common tags:</p>
+<p>Each report object must have <em>at least one</em> of the following tags:</p>
 <ul>
 <li>malware</li>
 <li>botnet</li>
+<li>c2</li>
+<li>zombie</li>
 <li>phishing</li>
 <li>ransomware</li>
+<li>malvertising</li>
 <li>ek</li>
 <li>scan</li>
 <li>bruteforce</li>
-<li>malicious activity</li>
+<li>proxy</li>
+<li>tor</li>
+<li>vpn</li>
 </ul>
-<p>You can also include additional tags, such as malware name (eg. cryptowall) for easy searching.</p>
+<p>You are encouraged to include additional tags, such as malware name (eg. cryptowall) for easy searching.</p>
+<p>Multiple IoC fields can be used to represent related information, such as MD5+URL+IPv4 (when malware was served from URL that resolved to IPv4 address), should all be entered as one IoC. Multiple reports should be submitted if the same MD5 hash was served from other URLs and/or IPs.</p>
 <h4 id="sample-report-object">Sample report object</h4>
 <pre><code class="json">{
     &quot;report&quot;: {
@@ -525,7 +592,7 @@ Get in touch if you have comments: info@cymon.io</p>
     </tr>
 </table>
 
-<h4 id="request-parameters_3">Request parameters</h4>
+<h4 id="request-parameters_4">Request parameters</h4>
 <table>
     <tr>
         <th>Parameter</th>
@@ -546,11 +613,11 @@ Get in touch if you have comments: info@cymon.io</p>
         <td>string</td>
         <td>No</td>
         <td>querystring</td>
-        <td>Date filter: <tt>YYYY-MM-DD</tt></td>
+        <td>Date filter: <tt>YYYY-MM-DD</tt> (default is -60 days)</td>
     </tr>
 </table>
 
-<h4 id="sample-request">Sample request</h4>
+<h4 id="sample-request_2">Sample request</h4>
 <p>No filters:</p>
 <pre><code class="http">GET /query/tags/dnsbl,spam,malicious%20activity
 </code></pre>
@@ -604,7 +671,7 @@ Get in touch if you have comments: info@cymon.io</p>
     </tr>
 </table>
 
-<h4 id="request-parameters_4">Request parameters</h4>
+<h4 id="request-parameters_5">Request parameters</h4>
 <table>
     <tr>
         <th>Parameter</th>
@@ -632,7 +699,7 @@ Get in touch if you have comments: info@cymon.io</p>
         <td>string</td>
         <td>No</td>
         <td>querystring</td>
-        <td>Date filter: <tt>YYYY-MM-DD</tt></td>
+        <td>Date filter: <tt>YYYY-MM-DD</tt> (default is -60 days)</td>
     </tr>
 </table>
 
@@ -749,7 +816,7 @@ The offset indicates the starting position of the query in relation to the compl
 <!--
 ### Python example
 
-wzxhzdk:21
+wzxhzdk:24
 
 -->
 
