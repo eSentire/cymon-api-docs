@@ -116,8 +116,12 @@
         
             <li><a href="#search-by-ioc">Search by IoC</a></li>
         
+            <li><a href="#search-by-feed">Search by Feed</a></li>
+        
     
         <li class="main "><a href="#authentication">Authentication</a></li>
+        
+            <li><a href="#login-api">Login API</a></li>
         
     
         <li class="main "><a href="#pagination">Pagination</a></li>
@@ -128,6 +132,8 @@
             <li><a href="#nodejs-example">Node.js example</a></li>
         
             <li><a href="#python-example">Python example</a></li>
+        
+            <li><a href="#curl-example">Curl example</a></li>
         
     
     </ul>
@@ -255,7 +261,15 @@ Get in touch if you have comments: info@cymon.io</p>
 }
 </code></pre>
 
-<h4 id="sample-response-body">Sample response body</h4>
+<h4 id="request-example">Request example</h4>
+<p>Using <code>curl</code>:</p>
+<pre><code class="bash">curl -X POST https://api.cymon.io/feeds \
+-d '{&quot;feed&quot;: {&quot;name&quot;: &quot;Feed Name&quot;, &quot;privacy&quot;: &quot;public&quot;, &quot;tags&quot;: [&quot;test&quot;]}}' \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Bearer xxxxxxxxxx'
+</code></pre>
+
+<h4 id="response-example">Response example</h4>
 <pre><code>{&quot;status&quot;: 200, &quot;message&quot;: &quot;feed created&quot;}
 </code></pre>
 
@@ -308,7 +322,15 @@ Get in touch if you have comments: info@cymon.io</p>
 }
 </code></pre>
 
-<h4 id="sample-response-body_1">Sample response body</h4>
+<h4 id="request-example_1">Request example</h4>
+<p>Using <code>curl</code>:</p>
+<pre><code class="bash">curl -X PUT https://api.cymon.io/feeds \
+-d '{&quot;feed&quot;: {&quot;name&quot;: &quot;Feed Name&quot;, &quot;privacy&quot;: &quot;private&quot;, &quot;tags&quot;: [&quot;test&quot;]}}' \
+-H 'Content-Type: application/json'\
+-H 'Authorization: Bearer xxxxxxxxxx'
+</code></pre>
+
+<h4 id="response-example_1">Response example</h4>
 <pre><code>{&quot;status&quot;: 200, &quot;message&quot;: &quot;feed updated&quot;}
 </code></pre>
 
@@ -347,7 +369,7 @@ Get in touch if you have comments: info@cymon.io</p>
     </tr>
 </table>
 
-<h4 id="sample-request">Sample request</h4>
+<h4 id="request-example_2">Request example</h4>
 <p>No filters:</p>
 <pre><code class="http">GET /feeds
 </code></pre>
@@ -356,7 +378,7 @@ Get in touch if you have comments: info@cymon.io</p>
 <pre><code class="http">GET /feeds?filter=user
 </code></pre>
 
-<h4 id="sample-response-body_2">Sample response body</h4>
+<h4 id="response-example_2">Response example</h4>
 <pre><code class="json">{
   &quot;feeds&quot;: [
     {
@@ -428,14 +450,14 @@ Get in touch if you have comments: info@cymon.io</p>
     </tr>
 </table>
 
-<h4 id="sample-request_1">Sample request</h4>
+<h4 id="request-example_3">Request example</h4>
 <pre><code class="http">GET /feeds/My%20Feed
 </code></pre>
 
 <blockquote>
 <p>Special characters must be url-encoded</p>
 </blockquote>
-<h4 id="sample-response-body_3">Sample response body</h4>
+<h4 id="response-example_3">Response example</h4>
 <pre><code class="json">{
   &quot;name&quot;: &quot;test&quot;,
   &quot;link&quot;: &quot;http://example.com&quot;,
@@ -570,7 +592,7 @@ Get in touch if you have comments: info@cymon.io</p>
 }
 </code></pre>
 
-<h4 id="sample-response-body_4">Sample response body</h4>
+<h4 id="response-example_4">Response example</h4>
 <pre><code>{&quot;status&quot;: 200, &quot;message&quot;: &quot;report accepted&quot;}
 </code></pre>
 
@@ -617,7 +639,7 @@ Get in touch if you have comments: info@cymon.io</p>
     </tr>
 </table>
 
-<h4 id="sample-request_2">Sample request</h4>
+<h4 id="request-example_4">Request example</h4>
 <p>No filters:</p>
 <pre><code class="http">GET /query/tags/dnsbl,spam,malicious%20activity
 </code></pre>
@@ -629,7 +651,7 @@ Get in touch if you have comments: info@cymon.io</p>
 <blockquote>
 <p>Special characters must be url-encoded</p>
 </blockquote>
-<h4 id="sample-response-body_5">Sample response body</h4>
+<h4 id="response-example_5">Response example</h4>
 <pre><code class="json">{
   &quot;status&quot;: 200,
   &quot;hits&quot;: [
@@ -703,7 +725,7 @@ Get in touch if you have comments: info@cymon.io</p>
     </tr>
 </table>
 
-<h4 id="sample-requests">Sample requests</h4>
+<h4 id="request-examples">Request examples</h4>
 <p>No filters:</p>
 <pre><code class="http">GET /query/ioc/ipv4/91.216.107.90
 </code></pre>
@@ -712,7 +734,7 @@ Get in touch if you have comments: info@cymon.io</p>
 <pre><code class="http">GET /query/ioc/ipv4/91.216.107.90?from=2016-06-20
 </code></pre>
 
-<h4 id="sample-response-body_6">Sample response body</h4>
+<h4 id="response-example_6">Response example</h4>
 <pre><code class="json">{
   &quot;status&quot;: 200,
   &quot;hits&quot;: [
@@ -737,6 +759,82 @@ Get in touch if you have comments: info@cymon.io</p>
 }
 </code></pre>
 
+<h3 id="search-by-feed">Search by Feed</h3>
+<p>Get IoC reports for a specific feed (if user has 'read' access to it).</p>
+<table>
+    <tr>
+        <th>Path</th>
+        <td>/query/feed/{feed_name}</td>
+    </tr>
+    <tr>
+        <th>Method</th>
+        <td>GET</td>
+    </tr>
+    <tr>
+        <th>Authentication required</th>
+        <td>Yes</td>
+    </tr>
+</table>
+
+<h4 id="request-parameters_6">Request parameters</h4>
+<table>
+    <tr>
+        <th>Parameter</th>
+        <th>Type</th>
+        <th>Required</th>
+        <th>Location</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td><tt>feed_name</tt></td>
+        <td>String</td>
+        <td>Yes</td>
+        <td>path</td>
+        <td>Feed name</td>
+    </tr>
+    <tr>
+        <td><tt>from</tt></td>
+        <td>string</td>
+        <td>No</td>
+        <td>querystring</td>
+        <td>Date filter: <tt>YYYY-MM-DD</tt> (default is -60 days)</td>
+    </tr>
+</table>
+
+<h4 id="request-example_5">Request example</h4>
+<p>No filters:</p>
+<pre><code class="http">GET /query/feed/My%20Feed
+</code></pre>
+
+<p>With <code>from</code> date filter:</p>
+<pre><code class="http">GET /query/feed/My%20Feed?from=2016-06-25
+</code></pre>
+
+<blockquote>
+<p>Special characters must be url-encoded</p>
+</blockquote>
+<h4 id="response-example_7">Response example</h4>
+<pre><code class="json">{
+  &quot;status&quot;: 200,
+  &quot;hits&quot;: [
+    {
+      &quot;feed&quot;: &quot;My Feed&quot;,
+      &quot;tags&quot;: [
+        &quot;spam&quot;
+      ],
+      &quot;timestamp&quot;: &quot;2016-06-25T16:02:47.000Z&quot;,
+      &quot;iocs&quot;: {
+        &quot;ipv4&quot;: &quot;91.216.107.90&quot;
+      },
+      &quot;title&quot;: &quot;Blacklisted by My Feed&quot;
+    },
+    ...
+  ],
+  &quot;total&quot;: 4,
+  &quot;count&quot;: 4
+}
+</code></pre>
+
 <h2 id="authentication">Authentication</h2>
 <p>API access requires authentication using <a href="https://en.wikipedia.org/wiki/JSON_Web_Token">JSON Web Token (JWT)</a>.</p>
 <p>Process overview:</p>
@@ -750,13 +848,56 @@ Get in touch if you have comments: info@cymon.io</p>
 <blockquote>
 <p>Visit <a href="https://jwt.io/introduction/">jwt.io</a> to learn more about JSON Web Tokens</p>
 </blockquote>
-<p>Authentication example:</p>
+<h3 id="login-api">Login API</h3>
+<p>Authenticate using your Cymon.io credentials.</p>
+<table>
+    <tr>
+        <th>Path</th>
+        <td>/auth/login</td>
+    </tr>
+    <tr>
+        <th>Method</th>
+        <td>POST</td>
+    </tr>
+    <tr>
+        <th>Authentication required</th>
+        <td>No</td>
+    </tr>
+</table>
+
+<h4 id="request-parameters_7">Request parameters</h4>
+<table>
+    <tr>
+        <th>Parameter</th>
+        <th>Type</th>
+        <th>Required</th>
+        <th>Location</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td><tt>username</tt></td>
+        <td>string</td>
+        <td>Yes</td>
+        <td>JSON</td>
+        <td>Your username</td>
+    </tr>
+    <tr>
+        <td><tt>password</tt></td>
+        <td>string</td>
+        <td>Yes</td>
+        <td>JSON</td>
+        <td>Your password</td>
+    </tr>
+</table>
+
+<h4 id="request-example_6">Request example</h4>
+<p>Using <code>curl</code>:</p>
 <pre><code class="bash">curl -X POST https://api.cymon.io/auth/login \
 -d '{&quot;username&quot;: &quot;example&quot;, &quot;password&quot;: &quot;monkey&quot;}' \
 -H 'Content-Type: application/json'
 </code></pre>
 
-<p>Response body example:</p>
+<h4 id="response-body-example">Response body example</h4>
 <pre><code class="json">{
   &quot;jwt&quot;: &quot;eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjEzODY4OTkxMzEsImlzcyI6ImppcmE6MTU0ODk1OTUiLCJxc2giOiI4MDYzZmY0Y2ExZTQxZGY3YmM5MGM4YWI2ZDBmNjIwN2Q0OTFjZjZkYWQ3YzY2ZWE3OTdiNDYxNGI3MTkyMmU5IiwiaWF0IjoxMzg2ODk4OTUxfQ.uKqU9dTB6gKwG6jQCuXYAiMNdfNRw98Hw_IWuA5MaMo&quot;,
   &quot;expires&quot;: 1466972778,
@@ -765,6 +906,7 @@ Get in touch if you have comments: info@cymon.io</p>
 }
 </code></pre>
 
+<h4 id="request-http-header-example">Request HTTP header example</h4>
 <p>Authenticated requests made to the Cymon API need to include your token in the <code>Authorization</code> HTTP header.
 The key should be prefixed by the string literal "Bearer", with whitespace separating the two strings. For example:</p>
 <pre><code class="http">GET /query/tags/ransomware HTTP/1.1
@@ -772,7 +914,7 @@ Host: api.cymon.io
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjEzODY4OTkxMzEsImlzcyI6ImppcmE6MTU0ODk1OTUiLCJxc2giOiI4MDYzZmY0Y2ExZTQxZGY3YmM5MGM4YWI2ZDBmNjIwN2Q0OTFjZjZkYWQ3YzY2ZWE3OTdiNDYxNGI3MTkyMmU5IiwiaWF0IjoxMzg2ODk4OTUxfQ.uKqU9dTB6gKwG6jQCuXYAiMNdfNRw98Hw_IWuA5MaMo
 </code></pre>
 
-<p>Authenticated request example:</p>
+<h4 id="authenticated-request-example">Authenticated request example</h4>
 <pre><code class="bash">curl -X GET https://api.cymon.io/query/tags/ransomware \
 -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjEzODY4OTkxMzEsImlzcyI6ImppcmE6MTU0ODk1OTUiLCJxc2giOiI4MDYzZmY0Y2ExZTQxZGY3YmM5MGM4YWI2ZDBmNjIwN2Q0OTFjZjZkYWQ3YzY2ZWE3OTdiNDYxNGI3MTkyMmU5IiwiaWF0IjoxMzg2ODk4OTUxfQ.uKqU9dTB6gKwG6jQCuXYAiMNdfNRw98Hw_IWuA5MaMo'
 </code></pre>
@@ -816,7 +958,7 @@ The offset indicates the starting position of the query in relation to the compl
 <!--
 ### Python example
 
-wzxhzdk:24
+wzxhzdk:29
 
 -->
 
@@ -929,6 +1071,42 @@ cymon.post(&quot;/submit&quot;, {
         }
     }
 })
+</code></pre>
+
+<h3 id="curl-example">Curl example</h3>
+<p>Login:</p>
+<pre><code class="bash">curl -X POST https://api.cymon.io/auth/login \
+-d '{&quot;username&quot;: &quot;example&quot;, &quot;password&quot;: &quot;monkey&quot;}' \
+-H 'Content-Type: application/json'
+</code></pre>
+
+<p>Search for IoC:</p>
+<pre><code class="bash">curl -X GET https://api.cymon.io/query/ioc/ipv4/x.x.x.x \
+-H 'Authorization: Bearer xxxxxxxxxx'
+</code></pre>
+
+<p>Submit IoC report:</p>
+<pre><code class="bash">JSON_DATA=$(cat &lt;&lt; EOF
+{
+  &quot;report&quot;: {
+    &quot;feed&quot;: &quot;My Feed&quot;,
+    &quot;timestamp&quot;: $(date +%s),
+    &quot;title&quot;: &quot;Botnet activity reported by My Feed&quot;,
+    &quot;description&quot;: &quot;Sandbox analysis revealed a botnet C&amp;C channel&quot;,
+    &quot;tags&quot;: [&quot;botnet&quot;, &quot;c2&quot;, &quot;cryptowall&quot;],
+    &quot;iocs&quot;: {
+      &quot;ipv4&quot;: &quot;x.x.x.x&quot;,
+      &quot;hostname&quot;: &quot;some.host.example.com&quot;
+    }
+  }
+}
+EOF
+)
+
+curl -X POST https://api.cymon.io/submit \
+-d &quot;$JSON_DATA&quot; \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Bearer xxxxxxxxxx'
 </code></pre></div>
         </div>
 
