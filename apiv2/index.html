@@ -116,12 +116,14 @@
         
             <li><a href="#search-by-ioc">Search by IoC</a></li>
         
+            <li><a href="#search-by-term">Search by Term</a></li>
+        
             <li><a href="#search-by-feed">Search by Feed</a></li>
         
     
-        <li class="main "><a href="#authentication">Authentication</a></li>
+        <li class="main "><a href="#authentication-api">Authentication API</a></li>
         
-            <li><a href="#login-api">Login API</a></li>
+            <li><a href="#login">Login</a></li>
         
     
         <li class="main "><a href="#pagination">Pagination</a></li>
@@ -153,6 +155,7 @@
 </ul>
 </li>
 <li>IoC and Feed objects can have any number of tags</li>
+<li>Bulk-export your feed(s) into Carbon Black (v4.0+ supported)</li>
 <li>Powerful search API powered by Elasticsearch</li>
 </ul>
 <p>The API is not generally available yet.
@@ -635,7 +638,7 @@ Get in touch if you have comments: info@cymon.io</p>
         <td>string</td>
         <td>No</td>
         <td>querystring</td>
-        <td>Date filter: <tt>YYYY-MM-DD</tt> (default is -60 days)</td>
+        <td>Date filter: <tt>YYYY-MM-DD</tt> (default is -14 days)</td>
     </tr>
 </table>
 
@@ -689,7 +692,7 @@ Get in touch if you have comments: info@cymon.io</p>
     </tr>
     <tr>
         <th>Authentication required</th>
-        <td>Yes</td>
+        <td>No</td>
     </tr>
 </table>
 
@@ -721,7 +724,7 @@ Get in touch if you have comments: info@cymon.io</p>
         <td>string</td>
         <td>No</td>
         <td>querystring</td>
-        <td>Date filter: <tt>YYYY-MM-DD</tt> (default is -60 days)</td>
+        <td>Date filter: <tt>YYYY-MM-DD</tt> (default is -14 days)</td>
     </tr>
 </table>
 
@@ -759,6 +762,82 @@ Get in touch if you have comments: info@cymon.io</p>
 }
 </code></pre>
 
+<h3 id="search-by-term">Search by Term</h3>
+<p>Search for IoCs that match a given string.</p>
+<table>
+    <tr>
+        <th>Path</th>
+        <td>/query/term/{term}</td>
+    </tr>
+    <tr>
+        <th>Method</th>
+        <td>GET</td>
+    </tr>
+    <tr>
+        <th>Authentication required</th>
+        <td>No</td>
+    </tr>
+</table>
+
+<h4 id="request-parameters_6">Request parameters</h4>
+<table>
+    <tr>
+        <th>Parameter</th>
+        <th>Type</th>
+        <th>Required</th>
+        <th>Location</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td><tt>term</tt></td>
+        <td>string</td>
+        <td>Yes</td>
+        <td>path</td>
+        <td>Text to search for</td>
+    </tr>
+    <tr>
+        <td><tt>from</tt></td>
+        <td>string</td>
+        <td>No</td>
+        <td>querystring</td>
+        <td>Date filter: <tt>YYYY-MM-DD</tt> (default is -14 days)</td>
+    </tr>
+</table>
+
+<h4 id="request-examples_1">Request examples</h4>
+<p>No filters:</p>
+<pre><code class="http">GET /query/term/ransomware
+</code></pre>
+
+<p>With <code>from</code> date filter:</p>
+<pre><code class="http">GET /query/term/ransomware?from=2016-07-15
+</code></pre>
+
+<h4 id="response-example_7">Response example</h4>
+<pre><code class="json">{
+  &quot;status&quot;: 200,
+  &quot;hits&quot;: [
+    {
+      &quot;feed&quot;: &quot;ransomware.tracker.exmaple.com&quot;,
+      &quot;title&quot;: &quot;Ransomware reported by Ransomware Tracker&quot;,
+      &quot;description&quot;: &quot;&quot;,
+      &quot;tags&quot;: [
+        &quot;botnet&quot;,
+        &quot;malware&quot;,
+        &quot;ransomware&quot;
+      ],
+      &quot;timestamp&quot;: &quot;2016-06-25T16:02:47.000Z&quot;,
+      &quot;iocs&quot;: {
+        &quot;ipv4&quot;: &quot;91.216.107.90&quot;
+      }
+    },
+    ...
+  ],
+  &quot;total&quot;: 4,
+  &quot;count&quot;: 4
+}
+</code></pre>
+
 <h3 id="search-by-feed">Search by Feed</h3>
 <p>Get IoC reports for a specific feed (if user has 'read' access to it).</p>
 <table>
@@ -776,7 +855,7 @@ Get in touch if you have comments: info@cymon.io</p>
     </tr>
 </table>
 
-<h4 id="request-parameters_6">Request parameters</h4>
+<h4 id="request-parameters_7">Request parameters</h4>
 <table>
     <tr>
         <th>Parameter</th>
@@ -797,7 +876,7 @@ Get in touch if you have comments: info@cymon.io</p>
         <td>string</td>
         <td>No</td>
         <td>querystring</td>
-        <td>Date filter: <tt>YYYY-MM-DD</tt> (default is -60 days)</td>
+        <td>Date filter: <tt>YYYY-MM-DD</tt> (default is -14 days)</td>
     </tr>
 </table>
 
@@ -813,7 +892,7 @@ Get in touch if you have comments: info@cymon.io</p>
 <blockquote>
 <p>Special characters must be url-encoded</p>
 </blockquote>
-<h4 id="response-example_7">Response example</h4>
+<h4 id="response-example_8">Response example</h4>
 <pre><code class="json">{
   &quot;status&quot;: 200,
   &quot;hits&quot;: [
@@ -835,20 +914,20 @@ Get in touch if you have comments: info@cymon.io</p>
 }
 </code></pre>
 
-<h2 id="authentication">Authentication</h2>
+<h2 id="authentication-api">Authentication API</h2>
 <p>API access requires authentication using <a href="https://en.wikipedia.org/wiki/JSON_Web_Token">JSON Web Token (JWT)</a>.</p>
 <p>Process overview:</p>
 <ol>
-<li>POST credentials to the Login API, receive token.</li>
-<li>Send token in header of each request, until it expires.</li>
-<li>Re-authenticate when token expires.</li>
+<li>POST credentials to the Login API to receive a token.</li>
+<li>Send token in header of each request.</li>
+<li>Repeat steps when token expires.</li>
 </ol>
 <p>The following diagram shows this process:</p>
 <p><image src="https://cdn.auth0.com/content/jwt/jwt-diagram.png" alt="jwt process" width="100%"/></p>
 <blockquote>
 <p>Visit <a href="https://jwt.io/introduction/">jwt.io</a> to learn more about JSON Web Tokens</p>
 </blockquote>
-<h3 id="login-api">Login API</h3>
+<h3 id="login">Login</h3>
 <p>Authenticate using your Cymon.io credentials.</p>
 <table>
     <tr>
@@ -865,7 +944,7 @@ Get in touch if you have comments: info@cymon.io</p>
     </tr>
 </table>
 
-<h4 id="request-parameters_7">Request parameters</h4>
+<h4 id="request-parameters_8">Request parameters</h4>
 <table>
     <tr>
         <th>Parameter</th>
@@ -958,7 +1037,7 @@ The offset indicates the starting position of the query in relation to the compl
 <!--
 ### Python example
 
-wzxhzdk:29
+wzxhzdk:32
 
 -->
 
